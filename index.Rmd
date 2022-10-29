@@ -1,5 +1,5 @@
 --- 
-title: "Climate Change Analysis"
+title: "Climate Change Analysis and Visualization"
 author: "Austin Chen, Kelly Du, Dianjing Fan"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
