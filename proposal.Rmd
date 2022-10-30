@@ -5,3 +5,4 @@ Climate change is commonly referred to as the long term change in Earth's climat
 
 ## Data availability
 
+This data is collected by The University of Washington’s Pan-Arctic Ice Ocean and Modeling System, or PIOMAS. PIOMAS provides the sea ice volume data starting from 1979 until now. This dataset has 13 columns (year and 12 months), and 44 rows(1979-present). The volume is given in 103 km3, and it is updated montyly. The dataset is available in text file and CSV file from http://psc.apl.uw.edu/research/projects/arctic-sea-ice-volume-anomaly/data/. For this project, we plan to use import the csv version into R by calling read.csv().
