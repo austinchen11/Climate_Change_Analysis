@@ -23,7 +23,7 @@
 <meta name="author" content="Austin Chen, Kelly Du, Dianjing Fan" />
 
 
-<meta name="date" content="2022-10-29" />
+<meta name="date" content="2022-10-31" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -76,7 +76,13 @@
 <li class="chapter" data-level="2" data-path="proposal.html"><a href="proposal.html"><i class="fa fa-check"></i><b>2</b> Proposal</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="proposal.html"><a href="proposal.html#research-topic"><i class="fa fa-check"></i><b>2.1</b> Research topic</a></li>
-<li class="chapter" data-level="2.2" data-path="proposal.html"><a href="proposal.html#data-availability"><i class="fa fa-check"></i><b>2.2</b> Data availability</a></li>
+<li class="chapter" data-level="2.2" data-path="proposal.html"><a href="proposal.html#data-availability"><i class="fa fa-check"></i><b>2.2</b> Data availability</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="proposal.html"><a href="proposal.html#annual-surface-temperature-change"><i class="fa fa-check"></i><b>2.2.1</b> Annual Surface Temperature Change</a></li>
+<li class="chapter" data-level="2.2.2" data-path="proposal.html"><a href="proposal.html#atmospheric-carbon-dioxide-concentrations"><i class="fa fa-check"></i><b>2.2.2</b> Atmospheric Carbon Dioxide Concentrations</a></li>
+<li class="chapter" data-level="2.2.3" data-path="proposal.html"><a href="proposal.html#change-in-mean-sea-levels"><i class="fa fa-check"></i><b>2.2.3</b> Change in Mean Sea Levels</a></li>
+<li class="chapter" data-level="2.2.4" data-path="proposal.html"><a href="proposal.html#climate-related-disasters-frequency"><i class="fa fa-check"></i><b>2.2.4</b> Climate Related Disasters Frequency</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>3</b> Data</a>
 <ul>
@@ -114,7 +120,31 @@
 </div>
 <div id="data-availability" class="section level2 hasAnchor" number="2.2">
 <h2><span class="header-section-number">2.2</span> Data availability<a href="proposal.html#data-availability" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>With climate change being such a forefront issue in the world today, there are vast amounts of data available on this subject, from a multitude of sources such as NASA, NOAA, and other climate organizations around the world. Therefore, our group is planning to combine multiple data sets to output a more comprehensive analysis. The following sections will denote the data sets we plan on using, as well as any relevant information regarding the data source and data collection process.</p>
+<div id="annual-surface-temperature-change" class="section level3 hasAnchor" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Annual Surface Temperature Change<a href="proposal.html#annual-surface-temperature-change" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><a href="https://climatedata.imf.org/datasets/4063314923d74187be9596f10d034914/explore" class="uri">https://climatedata.imf.org/datasets/4063314923d74187be9596f10d034914/explore</a>
+<a href="https://www.fao.org/faostat/en/#data/ET" class="uri">https://www.fao.org/faostat/en/#data/ET</a></p>
+<p>This data set showcases the annual estimates of mean surface temperature change from 1961 to 2021 by country, with respect to a baseline climatology (defined as the period of 1951 to 1980). The data comes from the Food and Agriculture Organization of the United Nations (FAO), and is updated annualy, as it is a yearly time series data. The data is downloadable as a csv file, which can easily be read into R Studios.</p>
+</div>
+<div id="atmospheric-carbon-dioxide-concentrations" class="section level3 hasAnchor" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> Atmospheric Carbon Dioxide Concentrations<a href="proposal.html#atmospheric-carbon-dioxide-concentrations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><a href="https://climatedata.imf.org/datasets/9c3764c0efcc4c71934ab3988f219e0e/explore" class="uri">https://climatedata.imf.org/datasets/9c3764c0efcc4c71934ab3988f219e0e/explore</a>
+<a href="https://gml.noaa.gov/ccgg/trends/" class="uri">https://gml.noaa.gov/ccgg/trends/</a></p>
+<p>This data set showcases the monthly atmospheric carbon dioxide levels, presented at the World level in parts per million (ppm). The data comes from the National Oceanic and Atmopsheric Administration (NOAA), and is updated monthly. Like the previous data set, this can be downloaded as a csv file, and easily read into R Studios.</p>
+</div>
+<div id="change-in-mean-sea-levels" class="section level3 hasAnchor" number="2.2.3">
+<h3><span class="header-section-number">2.2.3</span> Change in Mean Sea Levels<a href="proposal.html#change-in-mean-sea-levels" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><a href="https://climatedata.imf.org/datasets/b84a7e25159b4c65ba62d3f82c605855/explore" class="uri">https://climatedata.imf.org/datasets/b84a7e25159b4c65ba62d3f82c605855/explore</a></p>
+<p>This data set showcases the changes in mean sea levels across 24 regions of the world, and the specific measurements (in millimeters) are estimated from satellite radar altimeters. This data comes from NOAA, and its time series information is presented from 1992 to 2022, with 3/4 data points for every month in between. Like the previous data set, this can be downloaded as a csv file, and easily read into R Studios.</p>
+</div>
+<div id="climate-related-disasters-frequency" class="section level3 hasAnchor" number="2.2.4">
+<h3><span class="header-section-number">2.2.4</span> Climate Related Disasters Frequency<a href="proposal.html#climate-related-disasters-frequency" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><a href="https://climatedata.imf.org/datasets/b13b69ee0dde43a99c811f592af4e821/explore" class="uri">https://climatedata.imf.org/datasets/b13b69ee0dde43a99c811f592af4e821/explore</a></p>
+<p>This data set showcases the trend in the number of climate related natural disasters each year, by country. The data comes from the Emergency Events Database, which covers disasters that killed more than ten people, affected more than a hundred people, led to the declaration of a state of emergency, and led to a call for international assistance. This time series data is updated yearly, and can be downloaded as a csv file, easily read into R Studios.</p>
+<p>This data is collected by The University of Washington’s Pan-Arctic Ice Ocean and Modeling System, or PIOMAS. PIOMAS provides the sea ice volume data starting from 1979 until now. This data set has 13 columns (year and 12 months), and 44 rows(1979-present). The volume is given in 103 km3, and it is updated monthly. The data set is available in text file and CSV file from <a href="http://psc.apl.uw.edu/research/projects/arctic-sea-ice-volume-anomaly/data/" class="uri">http://psc.apl.uw.edu/research/projects/arctic-sea-ice-volume-anomaly/data/</a>. For this project, we plan to use import the csv version into R by calling read.csv().</p>
 
+</div>
 </div>
 </div>
             </section>

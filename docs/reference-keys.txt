@@ -2,6 +2,10 @@ introduction
 proposal
 research-topic
 data-availability
+annual-surface-temperature-change
+atmospheric-carbon-dioxide-concentrations
+change-in-mean-sea-levels
+climate-related-disasters-frequency
 data
 sources
 cleaning-transformation
