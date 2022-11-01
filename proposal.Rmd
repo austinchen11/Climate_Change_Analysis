@@ -36,3 +36,28 @@ This data set showcases the trend in the number of climate related natural disas
 http://psc.apl.uw.edu/research/projects/arctic-sea-ice-volume-anomaly/data/.
 
 This data set showcases the monthly changes in sea ice volume across the world from 1979 through present. The data is collected by The University of Washington’s Pan-Arctic Ice Ocean and Modeling System, or PIOMAS. This data set is in ASCII table format with 12 columns for each month and 44 rows for years 1979-present. The volume is 103 km3. Missing values are coded as -1, and it is updated monthly. The data set is available in text file and CSV file For this project, we plan to use import the csv version into R by calling read.csv().
+
+### Population
+https://data.un.org/_Docs/SYB/CSV/SYB65_1_202209_Population,%20Surface%20Area%20and%20Density.csv
+
+This data set showcases the population grouped by country in 2010, 2015, 2017, and 2022, including population estimates, sex ratio, population percentage in different age groups, population density, and surface area. The data comes from United Nations database and is updated regularly. It can be downloaded as a csv file.
+
+### Population growth
+https://data.un.org/_Docs/SYB/CSV/SYB65_246_202209_Population%20Growth,%20Fertility%20and%20Mortality%20Indicators.csv
+
+This data set showcases the population growth, fertility, life expectancy and mortality grouped by country in 2010, 2015, 2017, and 2022. The data can also be downloaded from United Nations database as a csv file.
+
+### GDP
+https://data.un.org/Data.aspx?q=gdp&d=SNAAMA&f=grID%3a101%3bcurrID%3aNCU%3bpcFlag%3a0
+
+This data set showcases GDP by type of expenditure (including Final consumption expenditure, Household consumption expenditure, General government final consumption expenditure, etc.) at current prices grouped by country from 1970 to 2020. The data can be downloaded from United Nations database as a csv file.
+
+### Air pollution
+https://data.oecd.org/air/air-pollution-exposure.htm
+
+The data set showcases the air pollution exposure by country until 2019. Air pollution exposure in the data refers to population exposure to more than 10 micrograms/m3 of Fine particulate matter (PM2.5). The data comes from Organisation for Economic Co-operation and Development (OECD) and can be downloaded as a csv file.
+
+
+
+
+
