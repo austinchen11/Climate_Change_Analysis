@@ -43,11 +43,6 @@ https://www.climatewatchdata.org/data-explorer/historical-emissions?historical-e
 This data set showcases sector-level greenhouse gas (GHG) emissions for 194 countries and the European Union from 1990-2019. This data is updated regularly including emissions of the six major GHGs, Non-CO2 emissions
 and other relevant metrics such as population and GDP values. This data set can be downloaded as a csv file, which is easy to import in R.
 
-### Change in Mean Surface Temperature
-https://www.fao.org/faostat/en/#data/ET 
-
-This data set showcases the global mean surface temperature changes and its standard deviation by country. This data comes from the National Aeronautics and Space Administration Goddard Institute for Space Studies (NASA-GISS), and it is updated annually. The current statistics cover from 1961 to 2020 and are available for monthly. Like the previous data set, this can be downloaded as a csv file, and easily read into R Studios.
-
 ### Change in Forests
 https://www.fao.org/faostat/en/#data/GF 
 
