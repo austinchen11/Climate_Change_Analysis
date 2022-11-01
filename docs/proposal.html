@@ -83,10 +83,13 @@
 <li class="chapter" data-level="2.2.3" data-path="proposal.html"><a href="proposal.html#change-in-mean-sea-levels"><i class="fa fa-check"></i><b>2.2.3</b> Change in Mean Sea Levels</a></li>
 <li class="chapter" data-level="2.2.4" data-path="proposal.html"><a href="proposal.html#climate-related-disasters-frequency"><i class="fa fa-check"></i><b>2.2.4</b> Climate Related Disasters Frequency</a></li>
 <li class="chapter" data-level="2.2.5" data-path="proposal.html"><a href="proposal.html#change-in-sea-ice-volume"><i class="fa fa-check"></i><b>2.2.5</b> Change in Sea Ice Volume</a></li>
-<li class="chapter" data-level="2.2.6" data-path="proposal.html"><a href="proposal.html#population"><i class="fa fa-check"></i><b>2.2.6</b> Population</a></li>
-<li class="chapter" data-level="2.2.7" data-path="proposal.html"><a href="proposal.html#population-growth"><i class="fa fa-check"></i><b>2.2.7</b> Population growth</a></li>
-<li class="chapter" data-level="2.2.8" data-path="proposal.html"><a href="proposal.html#gdp"><i class="fa fa-check"></i><b>2.2.8</b> GDP</a></li>
-<li class="chapter" data-level="2.2.9" data-path="proposal.html"><a href="proposal.html#air-pollution"><i class="fa fa-check"></i><b>2.2.9</b> Air pollution</a></li>
+<li class="chapter" data-level="2.2.6" data-path="proposal.html"><a href="proposal.html#greenhouse-gas-emission"><i class="fa fa-check"></i><b>2.2.6</b> Greenhouse Gas Emission</a></li>
+<li class="chapter" data-level="2.2.7" data-path="proposal.html"><a href="proposal.html#change-in-forests"><i class="fa fa-check"></i><b>2.2.7</b> Change in Forests</a></li>
+<li class="chapter" data-level="2.2.8" data-path="proposal.html"><a href="proposal.html#land-use"><i class="fa fa-check"></i><b>2.2.8</b> Land Use</a></li>
+<li class="chapter" data-level="2.2.9" data-path="proposal.html"><a href="proposal.html#population"><i class="fa fa-check"></i><b>2.2.9</b> Population</a></li>
+<li class="chapter" data-level="2.2.10" data-path="proposal.html"><a href="proposal.html#population-growth"><i class="fa fa-check"></i><b>2.2.10</b> Population growth</a></li>
+<li class="chapter" data-level="2.2.11" data-path="proposal.html"><a href="proposal.html#gdp"><i class="fa fa-check"></i><b>2.2.11</b> GDP</a></li>
+<li class="chapter" data-level="2.2.12" data-path="proposal.html"><a href="proposal.html#air-pollution"><i class="fa fa-check"></i><b>2.2.12</b> Air pollution</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>3</b> Data</a>
@@ -153,23 +156,39 @@
 <p><a href="http://psc.apl.uw.edu/research/projects/arctic-sea-ice-volume-anomaly/data/" class="uri">http://psc.apl.uw.edu/research/projects/arctic-sea-ice-volume-anomaly/data/</a>.</p>
 <p>This data set showcases the monthly changes in sea ice volume across the world from 1979 through present. The data is collected by The University of Washington’s Pan-Arctic Ice Ocean and Modeling System, or PIOMAS. This data set is in ASCII table format with 12 columns for each month and 44 rows for years 1979-present. The volume is 103 km3. Missing values are coded as -1, and it is updated monthly. The data set is available in text file and CSV file For this project, we plan to use import the csv version into R by calling read.csv().</p>
 </div>
-<div id="population" class="section level3 hasAnchor" number="2.2.6">
-<h3><span class="header-section-number">2.2.6</span> Population<a href="proposal.html#population" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="greenhouse-gas-emission" class="section level3 hasAnchor" number="2.2.6">
+<h3><span class="header-section-number">2.2.6</span> Greenhouse Gas Emission<a href="proposal.html#greenhouse-gas-emission" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><a href="https://www.climatewatchdata.org/data-explorer/historical-emissions?historical-emissions-data-sources=cait&amp;historical-emissions-gases=All%20Selected%2Call-ghg&amp;historical-emissions-regions=All%20Selected&amp;historical-emissions-sectors=%2Ctotal-including-lucf&amp;page=1#data" class="uri">https://www.climatewatchdata.org/data-explorer/historical-emissions?historical-emissions-data-sources=cait&amp;historical-emissions-gases=All%20Selected%2Call-ghg&amp;historical-emissions-regions=All%20Selected&amp;historical-emissions-sectors=%2Ctotal-including-lucf&amp;page=1#data</a></p>
+<p>This data set showcases sector-level greenhouse gas (GHG) emissions for 194 countries and the European Union from 1990-2019. This data is updated regularly including emissions of the six major GHGs, Non-CO2 emissions
+and other relevant metrics such as population and GDP values. This data set can be downloaded as a csv file, which is easy to import in R.</p>
+</div>
+<div id="change-in-forests" class="section level3 hasAnchor" number="2.2.7">
+<h3><span class="header-section-number">2.2.7</span> Change in Forests<a href="proposal.html#change-in-forests" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><a href="https://www.fao.org/faostat/en/#data/GF" class="uri">https://www.fao.org/faostat/en/#data/GF</a></p>
+<p>This data set showcases forests consists of CO2 emissions and removals corresponding to forest carbon stock changes. Statistics are available by country from 1990 to 2020. The data are based on United Nations Framework Convention on Climate Change (UNFCCC) and are sourced from the most recently available GHG National Inventories (NGHGI). It is updated annually and can be downloaded as a csv file, which is easy to import in R.</p>
+</div>
+<div id="land-use" class="section level3 hasAnchor" number="2.2.8">
+<h3><span class="header-section-number">2.2.8</span> Land Use<a href="proposal.html#land-use" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><a href="https://www.fao.org/faostat/en/#data/RL" class="uri">https://www.fao.org/faostat/en/#data/RL</a></p>
+<p>This data set showcases the global land use in 46 categories, such as primary forest, agricultural practices and so on. Statistics are availbale by country from 1961 to 2020. The data are collected via the FAO Questionnaire on Land Use, Irrigation and Agricultural Practices, based on FAO Land Use classification. It is updated annually and can be downloaded as a csv file, which is easy to import in R</p>
+</div>
+<div id="population" class="section level3 hasAnchor" number="2.2.9">
+<h3><span class="header-section-number">2.2.9</span> Population<a href="proposal.html#population" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><a href="https://data.un.org/_Docs/SYB/CSV/SYB65_1_202209_Population,%20Surface%20Area%20and%20Density.csv" class="uri">https://data.un.org/_Docs/SYB/CSV/SYB65_1_202209_Population,%20Surface%20Area%20and%20Density.csv</a></p>
-<p>This data set showcases the population grouped by country in 2010, 2015, 2017, and 2022, including population estimates, sex ratio, population percentage in different age groups, population density, and surface area. The data comes from United Nations database and is updated regularly. It can be downloaded as a csv file.</p>
+<p>This data set showcases the population grouped by country in 2010, 2015, 2017, and 2022, including population estimates, sex ratio, population percentage in different age groups, population density, and surface area. The data comes from United Nations database and is updated recently. It can be downloaded as a csv file.</p>
 </div>
-<div id="population-growth" class="section level3 hasAnchor" number="2.2.7">
-<h3><span class="header-section-number">2.2.7</span> Population growth<a href="proposal.html#population-growth" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="population-growth" class="section level3 hasAnchor" number="2.2.10">
+<h3><span class="header-section-number">2.2.10</span> Population growth<a href="proposal.html#population-growth" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><a href="https://data.un.org/_Docs/SYB/CSV/SYB65_246_202209_Population%20Growth,%20Fertility%20and%20Mortality%20Indicators.csv" class="uri">https://data.un.org/_Docs/SYB/CSV/SYB65_246_202209_Population%20Growth,%20Fertility%20and%20Mortality%20Indicators.csv</a></p>
-<p>This data set showcases the population growth, fertility, life expectancy and mortality grouped by country in 2010, 2015, 2017, and 2022. The data can also be downloaded from United Nations database as a csv file.</p>
+<p>This data set showcases the population growth, fertility, life expectancy and mortality grouped by country in 2010, 2015, 2017, and 2022. The data also comes from United Nations database and is updated recently. It can be downloaded as a csv file.</p>
 </div>
-<div id="gdp" class="section level3 hasAnchor" number="2.2.8">
-<h3><span class="header-section-number">2.2.8</span> GDP<a href="proposal.html#gdp" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="gdp" class="section level3 hasAnchor" number="2.2.11">
+<h3><span class="header-section-number">2.2.11</span> GDP<a href="proposal.html#gdp" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><a href="https://data.un.org/Data.aspx?q=gdp&amp;d=SNAAMA&amp;f=grID%3a101%3bcurrID%3aNCU%3bpcFlag%3a0" class="uri">https://data.un.org/Data.aspx?q=gdp&amp;d=SNAAMA&amp;f=grID%3a101%3bcurrID%3aNCU%3bpcFlag%3a0</a></p>
-<p>This data set showcases GDP by type of expenditure (including Final consumption expenditure, Household consumption expenditure, General government final consumption expenditure, etc.) at current prices grouped by country from 1970 to 2020. The data can be downloaded from United Nations database as a csv file.</p>
+<p>This data set showcases GDP by type of expenditure (including Final consumption expenditure, Household consumption expenditure, General government final consumption expenditure, etc.) at current prices grouped by country from 1970 to 2020. The data can be downloaded from United Nations database as a csv file and is updated annually.</p>
 </div>
-<div id="air-pollution" class="section level3 hasAnchor" number="2.2.9">
-<h3><span class="header-section-number">2.2.9</span> Air pollution<a href="proposal.html#air-pollution" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="air-pollution" class="section level3 hasAnchor" number="2.2.12">
+<h3><span class="header-section-number">2.2.12</span> Air pollution<a href="proposal.html#air-pollution" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><a href="https://data.oecd.org/air/air-pollution-exposure.htm" class="uri">https://data.oecd.org/air/air-pollution-exposure.htm</a></p>
 <p>The data set showcases the air pollution exposure by country until 2019. Air pollution exposure in the data refers to population exposure to more than 10 micrograms/m3 of Fine particulate matter (PM2.5). The data comes from Organisation for Economic Co-operation and Development (OECD) and can be downloaded as a csv file.</p>
 

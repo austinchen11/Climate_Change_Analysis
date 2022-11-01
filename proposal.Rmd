@@ -71,7 +71,7 @@ This data set showcases GDP by type of expenditure (including Final consumption 
 ### Air pollution
 https://data.oecd.org/air/air-pollution-exposure.htm
 
-The data set showcases the air pollution exposure by country until 2019. Air pollution exposure in the data refers to population exposure to more than 10 micrograms/m3 of Fine particulate matter (PM2.5). The data comes from Organisation for Economic Co-operation and Development (OECD) and can be downloaded as a csv file.
+The data set showcases the air pollution exposure by country until 2019. Air pollution exposure in the data refers to population exposure to more than 10 micrograms/m3 of Fine particulate matter (PM2.5). The data comes from Organisation for Economic Co-operation and Development (OECD) and can be downloaded as a csv file.  
 
 
 
