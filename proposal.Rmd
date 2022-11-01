@@ -32,7 +32,7 @@ https://climatedata.imf.org/datasets/b13b69ee0dde43a99c811f592af4e821/explore
 
 This data set showcases the trend in the number of climate related natural disasters each year, by country.  The data comes from the Emergency Events Database, which covers disasters that killed more than ten people, affected more than a hundred people, led to the declaration of a state of emergency, and led to a call for international assistance.  This time series data is updated yearly, and can be downloaded as a csv file, easily read into R Studios.  
 
+### Change in Sea Ice Volume
+http://psc.apl.uw.edu/research/projects/arctic-sea-ice-volume-anomaly/data/.
 
-This data is collected by The University of Washington’s Pan-Arctic Ice Ocean and Modeling System, or PIOMAS. PIOMAS provides the sea ice volume data starting from 1979 until now. This data set has 13 columns (year and 12 months), and 44 rows(1979-present). The volume is given in 103 km3, and it is updated monthly. The data set is available in text file and CSV file from http://psc.apl.uw.edu/research/projects/arctic-sea-ice-volume-anomaly/data/. For this project, we plan to use import the csv version into R by calling read.csv().
-
-
+This data set showcases the monthly changes in sea ice volume across the world from 1979 through present. The data is collected by The University of Washington’s Pan-Arctic Ice Ocean and Modeling System, or PIOMAS. This data set is in ASCII table format with 12 columns for each month and 44 rows for years 1979-present. The volume is 103 km3. Missing values are coded as -1, and it is updated monthly. The data set is available in text file and CSV file For this project, we plan to use import the csv version into R by calling read.csv().
