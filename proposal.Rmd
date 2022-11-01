@@ -37,6 +37,27 @@ http://psc.apl.uw.edu/research/projects/arctic-sea-ice-volume-anomaly/data/.
 
 This data set showcases the monthly changes in sea ice volume across the world from 1979 through present. The data is collected by The University of Washington’s Pan-Arctic Ice Ocean and Modeling System, or PIOMAS. This data set is in ASCII table format with 12 columns for each month and 44 rows for years 1979-present. The volume is 103 km3. Missing values are coded as -1, and it is updated monthly. The data set is available in text file and CSV file For this project, we plan to use import the csv version into R by calling read.csv().
 
+### Greenhouse Gas Emission
+https://www.climatewatchdata.org/data-explorer/historical-emissions?historical-emissions-data-sources=cait&historical-emissions-gases=All%20Selected%2Call-ghg&historical-emissions-regions=All%20Selected&historical-emissions-sectors=%2Ctotal-including-lucf&page=1#data
+
+This data set showcases sector-level greenhouse gas (GHG) emissions for 194 countries and the European Union from 1990-2019. This data is updated regularly including emissions of the six major GHGs, Non-CO2 emissions
+and other relevant metrics such as population and GDP values. This data set can be downloaded as a csv file, which is easy to import in R.
+
+### Change in Mean Surface Temperature
+https://www.fao.org/faostat/en/#data/ET 
+
+This data set showcases the global mean surface temperature changes and its standard deviation by country. This data comes from the National Aeronautics and Space Administration Goddard Institute for Space Studies (NASA-GISS), and it is updated annually. The current statistics cover from 1961 to 2020 and are available for monthly. Like the previous data set, this can be downloaded as a csv file, and easily read into R Studios.
+
+### Change in Forests
+https://www.fao.org/faostat/en/#data/GF 
+
+This data set showcases forests consists of CO2 emissions and removals corresponding to forest carbon stock changes. Statistics are available by country from 1990 to 2020. The data are based on United Nations Framework Convention on Climate Change (UNFCCC) and are sourced from the most recently available GHG National Inventories (NGHGI). It is updated annually and can be downloaded as a csv file, which is easy to import in R.
+
+### Land Use
+https://www.fao.org/faostat/en/#data/RL
+
+This data set showcases the global land use in 46 categories, such as primary forest, agricultural practices and so on. Statistics are availbale by country from 1961 to 2020. The data are collected via the FAO Questionnaire on Land Use, Irrigation and Agricultural Practices, based on FAO Land Use classification. It is updated annually and can be downloaded as a csv file, which is easy to import in R.
+
 ### Population
 https://data.un.org/_Docs/SYB/CSV/SYB65_1_202209_Population,%20Surface%20Area%20and%20Density.csv
 
