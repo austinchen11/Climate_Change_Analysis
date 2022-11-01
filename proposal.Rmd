@@ -56,7 +56,7 @@ This data set showcases forests consists of CO2 emissions and removals correspon
 ### Land Use
 https://www.fao.org/faostat/en/#data/RL
 
-This data set showcases the global land use in 46 categories, such as primary forest, agricultural practices and so on. Statistics are availbale by country from 1961 to 2020. The data are collected via the FAO Questionnaire on Land Use, Irrigation and Agricultural Practices, based on FAO Land Use classification. It is updated annually and can be downloaded as a csv file, which is easy to import in R.
+This data set showcases the global land use in 46 categories, such as primary forest, agricultural practices and so on. Statistics are availbale by country from 1961 to 2020. The data are collected via the FAO Questionnaire on Land Use, Irrigation and Agricultural Practices, based on FAO Land Use classification. It is updated annually and can be downloaded as a csv file, which is easy to import in R
 
 ### Population
 https://data.un.org/_Docs/SYB/CSV/SYB65_1_202209_Population,%20Surface%20Area%20and%20Density.csv
