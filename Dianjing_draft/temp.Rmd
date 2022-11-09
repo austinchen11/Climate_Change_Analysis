@@ -1,0 +1,60 @@
+---
+title: "temp"
+output:
+  html_document: default
+  pdf_document: default
+date: "2022-11-09"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+
+df_air_pollution <- read.csv("Air_pollution.csv")
+
+fig_pollution1 <- ggplot( subset(df_air_pollution, LOCATION %in% c("AUS", "CAN", "USA", "DEU", "FRA") &  MEASURE %in% "MICGRCUBM"), aes(x = TIME, y = Value, color = LOCATION, group = LOCATION)) +
+  geom_line() +
+  geom_point()
+
+fig_pollution2 <- ggplot( subset(df_air_pollution, LOCATION %in% c("AUS", "CAN", "USA", "DEU", "FRA") &  MEASURE %in% "PC_POP"), aes(x = TIME, y = Value, color = LOCATION, group = LOCATION)) +
+  geom_line() +
+  geom_point()
+
+plot(fig_pollution1)
+plot(fig_pollution2)
+```
+```{r}
+df_gdp <- read.csv("GDP.csv")
+
+fig_gdp1 <- ggplot( subset(df_gdp, Country.or.Area %in% c("	
+United States", "Canada", "France", "Germany") &  Item %in% "Gross Domestic Product (GDP)"), aes(x = Year, y = Value, color = Country.or.Area, group = Country.or.Area)) +
+  geom_line()
+
+plot(fig_gdp1)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
