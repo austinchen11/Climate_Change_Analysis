@@ -6,6 +6,14 @@ annual-surface-temperature-change
 atmospheric-carbon-dioxide-concentrations
 change-in-mean-sea-levels
 climate-related-disasters-frequency
+change-in-sea-ice-volume
+greenhouse-gas-emission
+change-in-forests
+land-use
+population
+population-growth
+gdp
+air-pollution
 data
 sources
 cleaning-transformation
