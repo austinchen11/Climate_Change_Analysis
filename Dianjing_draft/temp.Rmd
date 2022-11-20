@@ -35,6 +35,7 @@ United States", "Canada", "France", "Germany") &  Item %in% "Gross Domestic Prod
 
 plot(fig_gdp1)
 
+
 ```
 
 
