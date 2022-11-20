@@ -1,0 +1,92 @@
+---
+title: "temp"
+output:
+  html_document: default
+  pdf_document: default
+date: "2022-11-12"
+fig_width: 6 
+fig_height: 4 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+```
+
+```{r}
+df_forest <- read.csv("forest.csv")
+df_ghg <- read.csv("ghg.csv")
+df_landuse <- read.csv("landuse.csv")
+df_icevolume <- read.csv("PIOMAS_monthly.csv")
+```
+
+Select top 10 pulluter 
+```{r}
+df_forest1 <- subset(df_forest, Area %in% c("China","United States of America","India","Russia","Japan","Germany","Iran (Islamic Republic of)","Republic of Korea","Saudi Arabia","Indonesia") & Item %in% "Forestland" & Element %in% "Area" & Source %in% "FAO TIER 1")
+
+fig1_forest <- ggplot(df_forest1, aes(x=Year,y=Value, color=Area,group=Area)) + 
+  geom_line() + 
+  geom_point()
+
+plot(fig1_forest)
+```
+
+```{r}
+df_ghg1 <- subset(df_ghg, Country %in% c("China","United States","India","Russia","Japan","Germany","Iran","South Korea","Saudi Arabia","Indonesia"))
+
+df_ghg2 <- df_ghg1 %>% mutate_all(as.character) %>% pivot_longer(cols = -c("Country","Data.source","Sector","Gas","Unit"), names_to = "Year", values_to = "value", names_prefix = "X")
+
+fig2_ghg <- ggplot(df_ghg2, aes(x=Year,y=value, color=Country,group=Country)) + 
+  geom_line() + 
+  geom_point()
+
+plot(fig2_ghg)
+```
+
+```{r}
+df_icevolume["average"] = rowMeans(df_icevolume)
+
+fig3_icevolume <- ggplot(df_icevolume, aes(x=year,y=average)) + 
+  geom_line() + 
+  geom_point() + 
+  ggtitle("Change in Ice Volume") +
+  xlab("Year") + ylab("Ice Volume")
+
+plot(fig3_icevolume)
+```
+
+```{r}
+df_landuse_country <- subset(df_landuse, Area %in% c("China","United States of America","India","Russia","Japan","Germany","Iran (Islamic Republic of)","Republic of Korea","Saudi Arabia","Indonesia") & Item %in% "Country area")
+
+fig4_countryarea <- ggplot(df_landuse_country, aes(x=Year,y=Value, color=Area,group=Area)) + 
+  geom_line() + 
+  geom_point()
+
+plot(fig4_countryarea)
+```
+
+```{r}
+df_landuse_Agriculture <- subset(df_landuse, Area %in% c("China","United States of America","India","Russia","Japan","Germany","Iran (Islamic Republic of)","Republic of Korea","Saudi Arabia","Indonesia") & Item %in% "Agriculture")
+
+fig5_Agriculture <- ggplot(df_landuse_Agriculture, aes(x=Year,y=Value, color=Area,group=Area)) + 
+  geom_line() + 
+  geom_point()
+
+plot(fig5_Agriculture)
+```
+
+```{r}
+df_landuse_Land <- subset(df_landuse, Area %in% c("China","United States of America","India","Russia","Japan","Germany","Iran (Islamic Republic of)","Republic of Korea","Saudi Arabia","Indonesia") & Item %in% "Land area")
+
+fig6_land <- ggplot(df_landuse_Land, aes(x=Year,y=Value, color=Area,group=Area)) + 
+  geom_line() + 
+  geom_point()
+
+plot(fig6_land)
+```
+
