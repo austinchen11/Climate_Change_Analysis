@@ -53,16 +53,28 @@ plot_missing(temp_change_numeric, percent = FALSE)
 ```{r fig.width= 10, fig.height=5}
 
 temp_change_removed = na.omit(temp_change)
-
+ 
 library(reshape2)
 temp_change = temp_change[, -c(1)]
 
-df_temp <- melt(temp_change_removed[1:10,],id.vars=c("Country"),value.name="Value",
-                     variable.name="Year")
+subset(temp_change_removed, Country %in% c('United States', 'India', 'Japan', 'Germany', 'Indonesia', 'France', 'Brazil', 'United Kingdom', 'Italy', 'Mexico', 'China, P.R.: Mainland'))
 
-ggplot(data=df_temp, aes(x=Year, y=Value, group = Country, colour = Country)) +
-  geom_line()
+df_temp <- melt(temp_change_removed_top[, -c(1)], id.vars=c("Country"),value.name="Value", variable.name="Year")
 
+ggplot(data=subset(df_temp, Country %in% c('United States', 'India', 'Japan', 'Germany', 'Indonesia', 'France', 'Brazil', 'United Kingdom', 'Italy', 'Mexico', 'China, P.R.: Mainland')), aes(x=Year, y=Value, group = Country, colour = Country)) +
+  geom_line() +
+  geom_point()
+
+
+```
+
+```{r}
+temp_change_removed['average'] = rowMeans(temp_change_removed[, -c(1, 2)])
+temp_ordered_average = temp_change_removed[order(temp_change_removed$average, decreasing = TRUE),]
+
+
+
+gdp = gdp[gdp$Item == "Gross Domestic Product (GDP)",]
 ```
 
 
@@ -70,17 +82,34 @@ ggplot(data=df_temp, aes(x=Year, y=Value, group = Country, colour = Country)) +
 world_co2 = world_co2[, -c(1, 3, 4, 5, 7, 8, 9, 10)]
 world_co2 = world_co2[world_co2$Unit == "Parts Per Million", ]
 
-plot(world_co2$Date, world_co2$Value)
+ggplot(data = world_co2, aes(x = Date, y = Value)) +
+  geom_point() +
 
 ```
 
-```{r}
-sea_level_change = sea_level_change[, -c(1:10)]
+```{r fig.width= 10, fig.height= 10}
+sea_level_change_region = sea_level_change[, -c(1:10)]
 
 ggplot(data = sea_level_change, aes(x = Date, y = Value, group = Measure, color = Measure)) + 
   geom_line()
+
+ggplot(data = sea_level_change, aes(x = Date, y =Value)) +
+  geom_line() +
+  facet_wrap(~Measure)
 ```
 
+```{r}
+sea_level_change_region$Date = substring(sea_level_change_region$Date, 2)
+sea_level_change_region$Date = gsub("/", "-", sea_level_change_region$Date)
+sea_level_change_region$Date = as.Date(sea_level_change_region$Date, format = "%m-%d-%Y")
+
+sl_group = sea_level_change_region %>%
+  group_by(Date) %>%
+  summarize(mean_change = mean(Value))
+
+ggplot(data = sl_group, aes(x = Date, y = mean_change)) +
+  geom_line()
+```
 
 
 
