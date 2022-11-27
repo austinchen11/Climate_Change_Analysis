@@ -8,9 +8,11 @@ date: "2022-11-09"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
 library(openxlsx)
 library(ggplot2)
 library(mi)
+
 ```
 
 ```{r}
