@@ -4,8 +4,8 @@ output:
   html_document: default
   pdf_document: default
 date: "2022-11-12"
-fig_width: 6 
-fig_height: 4 
+fig_width: 20
+fig_height: 8
 ---
 
 ```{r setup, include=FALSE}
@@ -16,6 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(dplyr)
 library(tidyr)
+library(forcats)
 ```
 
 ```{r}
@@ -25,13 +26,13 @@ df_landuse <- read.csv("landuse.csv")
 df_icevolume <- read.csv("PIOMAS_monthly.csv")
 ```
 
-Select top 10 pulluter 
+Select top 10 polluters 
 ```{r}
 df_forest1 <- subset(df_forest, Area %in% c("China","United States of America","India","Russia","Japan","Germany","Iran (Islamic Republic of)","Republic of Korea","Saudi Arabia","Indonesia") & Item %in% "Forestland" & Element %in% "Area" & Source %in% "FAO TIER 1")
 
-fig1_forest <- ggplot(df_forest1, aes(x=Year,y=Value, color=Area,group=Area)) + 
+fig1_forest <- ggplot(df_forest1, aes(x=Year,y=as.numeric(Value), color=Area,group=Area)) + 
   geom_line() + 
-  geom_point()
+  geom_point() + ggtitle('Changes in Forest Area') + xlab('Year') + ylab('Forest Area / 1000 ha')
 
 plot(fig1_forest)
 ```
@@ -41,15 +42,29 @@ df_ghg1 <- subset(df_ghg, Country %in% c("China","United States","India","Russia
 
 df_ghg2 <- df_ghg1 %>% mutate_all(as.character) %>% pivot_longer(cols = -c("Country","Data.source","Sector","Gas","Unit"), names_to = "Year", values_to = "value", names_prefix = "X")
 
-fig2_ghg <- ggplot(df_ghg2, aes(x=Year,y=value, color=Country,group=Country)) + 
+fig2_ghg <- ggplot(df_ghg2, aes(x=Year,y=as.numeric(value), color=Country,group=Country)) + 
   geom_line() + 
-  geom_point()
+  geom_point() + theme(axis.text.x = element_text(angle = 90)) +
+  ggtitle('Changes in Green House Gas') + xlab('Year') + 
 
 plot(fig2_ghg)
 ```
+```{r}
+ggplot(df_ghg2,aes(x=Year,y=as.numeric(value),fill=Country))+geom_bar(stat='identity')
+```
+
 
 ```{r}
-df_icevolume["average"] = rowMeans(df_icevolume)
+fig2_ghg_country <- ggplot(df_ghg2, aes(x=Year,y=as.numeric(value), group=Country)) + 
+  geom_line() + 
+  geom_point() + theme(axis.text.x = element_text(angle = 90)) + facet_wrap(~Country, scale="free_y",nrow=5) +
+  ggtitle('Changes in Green House Gas by Countries')
+
+plot(fig2_ghg_country)
+```
+
+```{r}
+df_icevolume["average"] = rowMeans(df_icevolume[, -c(1)])
 
 fig3_icevolume <- ggplot(df_icevolume, aes(x=year,y=average)) + 
   geom_line() + 
@@ -60,33 +75,39 @@ fig3_icevolume <- ggplot(df_icevolume, aes(x=year,y=average)) +
 plot(fig3_icevolume)
 ```
 
-```{r}
-df_landuse_country <- subset(df_landuse, Area %in% c("China","United States of America","India","Russia","Japan","Germany","Iran (Islamic Republic of)","Republic of Korea","Saudi Arabia","Indonesia") & Item %in% "Country area")
-
-fig4_countryarea <- ggplot(df_landuse_country, aes(x=Year,y=Value, color=Area,group=Area)) + 
-  geom_line() + 
-  geom_point()
-
-plot(fig4_countryarea)
-```
 
 ```{r}
 df_landuse_Agriculture <- subset(df_landuse, Area %in% c("China","United States of America","India","Russia","Japan","Germany","Iran (Islamic Republic of)","Republic of Korea","Saudi Arabia","Indonesia") & Item %in% "Agriculture")
 
-fig5_Agriculture <- ggplot(df_landuse_Agriculture, aes(x=Year,y=Value, color=Area,group=Area)) + 
+fig4_Agriculture <- ggplot(df_landuse_Agriculture, aes(x=Year,y=as.numeric(Value), color=Area,group=Area)) + 
   geom_line() + 
-  geom_point()
+  geom_point() + ggtitle('Changes in Agricultural Area')
 
-plot(fig5_Agriculture)
+plot(fig4_Agriculture)
 ```
 
 ```{r}
-df_landuse_Land <- subset(df_landuse, Area %in% c("China","United States of America","India","Russia","Japan","Germany","Iran (Islamic Republic of)","Republic of Korea","Saudi Arabia","Indonesia") & Item %in% "Land area")
-
-fig6_land <- ggplot(df_landuse_Land, aes(x=Year,y=Value, color=Area,group=Area)) + 
+fig4_Agriculture_country <- ggplot(df_landuse_Agriculture, aes(x=Year,y=as.numeric(Value),group=Area)) + 
   geom_line() + 
-  geom_point()
+  geom_point() + facet_wrap(~Area, scale="free_y") + theme(axis.text.x = element_text(angle = 90)) + 
+  ggtitle('Changes in Agricultural Area by Countries')
 
-plot(fig6_land)
+plot(fig4_Agriculture_country)
 ```
 
+```{r}
+df_landuse_forestland <- subset(df_landuse, Area %in% c("China","United States of America","India","Russia","Japan","Germany","Iran (Islamic Republic of)","Republic of Korea","Saudi Arabia","Indonesia") & Item %in% "Forest land" & Element %in% "Area")
+
+fig5_forestland <- ggplot(df_landuse_forestland, aes(x=Year,y=as.numeric(Value), color=Area,group=Area)) + 
+  geom_line() + 
+  geom_point() + ggtitle('Changes in Forestland Area')
+
+plot(fig5_forestland)
+```
+
+```{r}
+fig5_forestland_country <- ggplot(df_landuse_forestland, aes(x=Year,y=as.numeric(Value),group=Area)) + 
+  geom_line() + 
+  geom_point() + facet_wrap(~Area, scale="free_y") + theme(axis.text.x = element_text(angle = 90))
+plot(fig5_forestland_country)
+```
