@@ -35,12 +35,18 @@ the dataset doesn't contain China's GDP value in 2021 (but does contain from 197
 ```{r}
 country_gdp = c("United States", "India", "Japan", "Germany", "Indonesia", "France", "Brazil", "United Kingdom", "Italy", "Mexico", "China (People's Republic of)")
 fig_gdp2 <- ggplot( subset(df_gdp, Country %in% country_gdp & Subject %in% "Gross Domestic Product (GDP); millions" & Measure %in% "USD, current prices, current PPPs"), aes(x = Time, y = Value, color = Country, group = Country)) +
-  geom_line()
+  geom_line() + 
+  labs(title = "GDP from 1970 - 2021",
+       x = "Year",
+       y = "GDP")
 plot(fig_gdp2)
 ```
 ```{r}
 fig_pop1 <- ggplot( subset(df_gdp, Country %in% country_gdp & Subject %in% "Total population; persons; thousands"), aes(x = Time, y = Value, color = Country, group = Country)) +
-  geom_line()
+  geom_line() + 
+  labs(title = "Population from 1970 - 2021",
+       x = "Year",
+       y = "Population")
 plot(fig_pop1)
 ```
 In the original population density and population growth dataset, we found that it only contains population in 2010, 2015, 2020, 2022, which are not enough;
@@ -114,8 +120,9 @@ ggplot( air_combined, aes(x = factor(year), y = value, color = country, group = 
 ```
 
 ```{r}
-ggplot( air_combined, aes(x = population, y = value, color = country, group = country)) +
-  geom_point()
+ggplot( air_combined, aes(x = year, y = value, color = country, group = country)) +
+  geom_line() +  
+  facet_wrap(~country)
 ```
 
 

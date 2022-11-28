@@ -1,1 +1,59 @@
 # Results
+
+## GDP
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(openxlsx)
+library(ggplot2)
+library(mi)
+library(dplyr)
+library(tidyr)
+```
+
+```{r}
+df_gdp <- read.csv("data/gdp.csv")
+top10_gdp_2021 <- df_gdp[df_gdp$Subject == "Gross Domestic Product (GDP); millions" & df_gdp$TIME == 2021 & df_gdp$Measure == "USD, current prices, current PPPs",]
+top10_gdp_2021[ order(top10_gdp_2021$Value,decreasing = TRUE), ][0:14,]
+```
+From the GDP dataset, we found that the top ten countries which have the highest GDP in 2021 (in USD, current prices, current PPPs) are: USA, India, Japan, Germany, Indonesia, France, Brazil, UK, Italy, Mexico. The dataset doesn't contain China's GDP value in 2021 (but does contain from 1970-2020); this is not reflected as a null value in the dataset. Since China's GDP is also among the highest in the world before, we decided to include USA, India, Japan, Germany, Indonesia, France, Brazil, UK, Italy, Mexico, and China in our future analysis.
+
+```{r}
+country_gdp = c("United States", "India", "Japan", "Germany", "Indonesia", "France", "Brazil", "United Kingdom", "Italy", "Mexico", "China (People's Republic of)")
+fig_gdp2 <- ggplot( subset(df_gdp, Country %in% country_gdp & Subject %in% "Gross Domestic Product (GDP); millions" & Measure %in% "USD, current prices, current PPPs"), aes(x = Time, y = Value, color = Country, group = Country)) +
+  geom_line() + 
+  labs(title = "GDP from 1970 - 2021",
+       x = "Year",
+       y = "GDP")
+plot(fig_gdp2)
+```
+
+
+## Population
+```{r}
+fig_pop1 <- ggplot( subset(df_gdp, Country %in% country_gdp & Subject %in% "Total population; persons; thousands"), aes(x = Time, y = Value, color = Country, group = Country)) +
+  geom_line() + 
+  labs(title = "Population from 1970 - 2021",
+       x = "Year",
+       y = "Population")
+plot(fig_pop1)
+```
+
+## Air Pollution
+```{r}
+air_combined <- read.csv("data/air_combined.csv")
+ggplot( air_combined, aes(x = factor(year), y = value, color = country, group = country)) +
+  geom_line() + 
+  labs(title = "Air Pollution from 2010 - 2021",
+       x = "Year",
+       y = "PM 2.5 concentration (μg/m3)")
+
+ggplot( air_combined, aes(x = year, y = value, color = country, group = country)) +
+  geom_line() +  
+  facet_wrap(~country) + 
+  labs(title = "Air Pollution from 2010 - 2021",
+       x = "Year",
+       y = "PM 2.5 concentration (μg/m3)")
+
+```
+
+There is a jump in India's PM2.5 concentration before and after 2017, and the data is missing before 2016. It is reasonable that the data before and after 2017 is inconsistent since the dataset is combined from one dataset from WHO, containing PM2.5 concentration data from 2010 to 2017, and one dataset from IQAir, containing PM2.5 concentration data from 2018 to 2021. The data from other countries are consistent.
