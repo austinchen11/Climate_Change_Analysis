@@ -8,27 +8,24 @@ date: "2022-11-09"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
 library(openxlsx)
 library(ggplot2)
 library(mi)
-
+library(dplyr)
+library(tidyr)
 ```
 
 ```{r}
 df_gdp_discard <- read.csv("gdp_discard.csv")
-
 country_gdp_discard = c("United States", "Canada", "France", "Germany", "United Kingdom of Great Britain and Northern Ireland", "Italy", "Japan")
 fig_gdp1 <- ggplot( subset(df_gdp_discard, Country.or.Area %in% country_gdp_discard & Item %in% "Gross Domestic Product (GDP)"), aes(x = Year, y = Value, color = Country.or.Area, group = Country.or.Area)) +
   geom_line()
-
 plot(fig_gdp1)
 ```
 We found that Japan and US are two outliers, which have GPD much higher than other countries. Intuitively, the GDP for these two countries does not make sense; therefore, we searched for other datasets and decided to use a new dataset that had the correct GDP for each country.
 
 ```{r}
 df_gdp <- read.csv("gdp.csv")
-
 top10_gdp_2021 <- df_gdp[df_gdp$Subject == "Gross Domestic Product (GDP); millions" & df_gdp$TIME == 2021 & df_gdp$Measure == "USD, current prices, current PPPs",]
 top10_gdp_2021[ order(top10_gdp_2021$Value,decreasing = TRUE), ][0:14,]
 ```
@@ -50,38 +47,76 @@ In the original population density and population growth dataset, we found that 
 we found another dataset that contains more comprehensive population data.
 
 ```{r}
-selected_country = c("CAN", "DEU", "FRA", "GBR", "ITA", "JPN", "USA", "WLD")
-
-df_air_pollution <- read.csv("Air_pollution.csv")
-
-fig_pollution1 <- ggplot( subset(df_air_pollution, LOCATION %in% selected_country &  MEASURE %in% "MICGRCUBM"), aes(x = TIME, y = Value, color = LOCATION, group = LOCATION)) +
+country_air = c("CAN", "DEU", "FRA", "GBR", "ITA", "JPN", "USA", "WLD")
+df_air_pollution <- read.csv("Air_pollution.csv", fileEncoding="UTF-8-BOM")
+fig_pollution1 <- ggplot( subset(df_air_pollution, LOCATION %in% country_air &  MEASURE %in% "MICGRCUBM"), aes(x = TIME, y = Value, color = LOCATION, group = LOCATION)) +
   geom_line()
-
-fig_pollution2 <- ggplot( subset(df_air_pollution, LOCATION %in% selected_country &  MEASURE %in% "PC_POP"), aes(x = TIME, y = Value, color = LOCATION, group = LOCATION)) +
+fig_pollution2 <- ggplot( subset(df_air_pollution, LOCATION %in% country_air &  MEASURE %in% "PC_POP"), aes(x = TIME, y = Value, color = LOCATION, group = LOCATION)) +
   geom_line()
-
-<<<<<<< HEAD
-
-=======
 plot(fig_pollution1)
 # 2015 spike; before/after 2019
->>>>>>> 98f7ac31667993c989fac2d333e65215c6e50b32
 ```
 
 https://www.who.int/data/gho/data/themes/air-pollution/who-air-quality-database
 
 ```{r}
 df_who_air_pollution <- read.xlsx("who_air_pollution.xlsx", sheet = 2)
+
+colnames(df_who_air_pollution)[6] <- "value"
   
-x <- missing_data.frame(df_who_air_pollution)
-image(x)
+#x <- missing_data.frame(df_who_air_pollution)
+#image(x)
 ```
 
 
+```{r}
+df_who_air_pollution2 <- 
+  df_who_air_pollution %>%
+  drop_na(6) %>%
+  select(3,5,6) %>%
+  group_by(WHO.Country.Name, Measurement.Year) %>%
+  summarise_at(vars(value), funs(mean(., na.rm=TRUE)))
+
+ggplot( subset(df_who_air_pollution2, WHO.Country.Name %in% c("United States of America", "India", "Japan", "Germany", "Indonesia", "France", "Brazil", "United Kingdom", "Italy", "Mexico", "China")), aes(x = factor(Measurement.Year), y = value, color = WHO.Country.Name, group = WHO.Country.Name)) + 
+  geom_line()
+```
 
 
+```{r}
+df_air <- read.csv("AIR QUALITY INDEX- top countries.csv") %>% 
+  mutate_at(c(3:6), as.numeric) %>%
+  rename("2021" = "X2021",
+         "2020" = "X2020",
+         "2019" = "X2019",
+         "2018" = "X2018")
+
+df_air$Population <- as.numeric(gsub(",", "", df_air$Population))
+
+df_air2 <- gather(df_air, key="year", value="value", 3:6)
+
+fig_pollution3 <- ggplot( subset(df_air2, Country.Region %in% c("United States", "India", "Japan", "Germany", "Indonesia", "France", "Brazil", "United Kingdom", "Italy", "Mexico", "China")), aes(x = year, y = value, color = Country.Region, group = Country.Region)) +
+  geom_line()
+plot(fig_pollution3)
+
+```
 
 
+```{r}
+#temp <- subset(df_who_air_pollution2, WHO.Country.Name %in% c("United States of America", "India", "Japan", "Germany", "Indonesia", "France", "Brazil", "United Kingdom", "Italy", "Mexico", "China") )
+#write.csv(temp,"air_combined.csv", row.names = FALSE)
+```
+
+
+```{r}
+air_combined <- read.csv("air_combined.csv")
+ggplot( air_combined, aes(x = factor(year), y = value, color = country, group = country)) +
+  geom_line()
+```
+
+```{r}
+ggplot( air_combined, aes(x = population, y = value, color = country, group = country)) +
+  geom_point()
+```
 
 
 
