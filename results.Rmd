@@ -15,6 +15,7 @@ df_gdp <- read.csv("data/gdp.csv")
 top10_gdp_2021 <- df_gdp[df_gdp$Subject == "Gross Domestic Product (GDP); millions" & df_gdp$TIME == 2021 & df_gdp$Measure == "USD, current prices, current PPPs",]
 top10_gdp_2021[ order(top10_gdp_2021$Value,decreasing = TRUE), ][0:14,]
 ```
+
 From the GDP dataset, we found that the top ten countries which have the highest GDP in 2021 (in USD, current prices, current PPPs) are: USA, India, Japan, Germany, Indonesia, France, Brazil, UK, Italy, Mexico. The dataset doesn't contain China's GDP value in 2021 (but does contain from 1970-2020); this is not reflected as a null value in the dataset. Since China's GDP is also among the highest in the world before, we decided to include USA, India, Japan, Germany, Indonesia, France, Brazil, UK, Italy, Mexico, and China in our future analysis.
 
 ```{r}
@@ -57,3 +58,154 @@ ggplot( air_combined, aes(x = year, y = value, color = country, group = country)
 ```
 
 There is a jump in India's PM2.5 concentration before and after 2017, and the data is missing before 2016. It is reasonable that the data before and after 2017 is inconsistent since the dataset is combined from one dataset from WHO, containing PM2.5 concentration data from 2010 to 2017, and one dataset from IQAir, containing PM2.5 concentration data from 2018 to 2021. The data from other countries are consistent.
+
+
+
+## Carbon Dioxide
+
+```{r}
+world_co2 = read.csv('data/Atmospheric_CO%E2%82%82_Concentrations.csv', stringsAsFactors = TRUE)
+world_co2 = world_co2[, -c(1, 3, 4, 5, 7, 8, 9, 10)]
+world_co2 = world_co2[world_co2$Unit == "Parts Per Million", ]
+
+
+
+ggplot(data = world_co2, aes(x = Date, y = Value)) +
+  geom_point() +
+  labs(title = "World Carbon Dioxide Concentration From 1958 to 2022",
+       x = "Year",
+       y = "Carbon Dioxide (Parts per Million)")
+
+
+```
+
+## Temperature Change
+```{r}
+temp_change = read.csv('data/Annual_Surface_Temperature_Change.csv', stringsAsFactors = TRUE)
+temp_change = temp_change[, -c(3, 4, 5, 6 ,7 ,8 ,9, 10)]
+temp_change = temp_change[, -c(1)]
+temp_change_removed = na.omit(temp_change)
+
+df_temp <- melt(subset(temp_change_removed, Country %in% c('United States', 'India', 'Japan', 'Germany', 'Indonesia', 'France', 'Brazil', 'United Kingdom', 'Italy', 'Mexico', 'China, P.R.: Mainland')), id.vars=c("Country"),value.name="Value", variable.name="Year")
+
+df_temp_subset = subset(df_temp, Country %in% c('United States', 'India', 'Japan', 'Germany', 'Indonesia', 'France', 'Brazil', 'United Kingdom', 'Italy', 'Mexico', 'China, P.R.: Mainland'))
+
+df_temp_subset$Year = substring(df_temp_subset$Year, 2)
+
+df_temp_subset_average = df_temp_subset %>%
+  group_by(Country) %>%
+  summarise(average = mean(Value))
+
+ggplot(data=subset(df_temp, Country %in% c('United States', 'India', 'Japan', 'Germany', 'Indonesia', 'France', 'Brazil', 'United Kingdom', 'Italy', 'Mexico', 'China, P.R.: Mainland')), aes(x=Year, y=Value, group = Country, colour = Country)) +
+  geom_line() +
+  geom_point()
+
+ggplot(data = df_temp_subset, aes(x = reorder(Country, Value, median), y = Value)) + 
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 90))
+
+```
+
+## Sea Level Change
+
+```{r}
+sea_level_change = read.csv("data/Change_in_Mean_Sea_Levels.csv", stringsAsFactors = TRUE)
+sea_level_change = sea_level_change[, -c(1:10)]
+
+ggplot(data = sea_level_change, aes(x = Date, y = Value, group = Measure, color = Measure)) + 
+  geom_line()
+
+ggplot(data = sea_level_change, aes(x = reorder(Measure, Value, median), y = Value)) +
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 90))
+
+
+```
+
+## Temperature Change and GDP
+
+```{r}
+df_temp_subset_1970 = df_temp_subset[df_temp_subset$Year >= 1970,]
+df_temp_subset_1970$Country = as.character(df_temp_subset_1970$Country)
+df_temp_subset_1970$Country[df_temp_subset_1970$Country == "China, P.R.: Mainland"] = "China (People's Republic of)"
+df_gdp_chen = subset(df_gdp, Country %in% country_gdp & Subject %in% "Gross Domestic Product (GDP); millions" & Measure %in% "USD, current prices, current PPPs")
+
+df_temp_subset_1970$Country = as.factor(df_temp_subset_1970$Country)
+
+temperature_gdp = merge(df_temp_subset_1970, df_gdp_chen, by.x = c("Country", 'Year'), by.y = c('Country', "Time"))
+
+ggplot(data = temperature_gdp, aes(x = Value.x, y = Value.y)) +
+  geom_point() +
+  facet_wrap(~Country)
+
+ggplot(data = temperature_gdp, aes(x = Value.x, y = Value.y,)) +
+  geom_point() 
+
+
+```
+
+## Temperature Change and Population
+```{r}
+df_population = subset(df_gdp, Country %in% country_gdp & Subject %in% "Total population; persons; thousands")
+temperature_population = merge(df_temp_subset_1970, df_population, by.x = c("Country", 'Year'), by.y = c('Country', "Time"))
+
+ggplot(data = temperature_population, aes(x = Value.x, y = Value.y)) +
+  geom_point() +
+  facet_wrap(~Country)
+
+ggplot(data = temperature_population, aes(x = Value.x, y = Value.y)) +
+  geom_point() 
+
+```
+
+## Temperature Change, Population, GDP
+```{r}
+library(GGally)
+temp_gdp_pollution = merge(temperature_gdp, df_population, by.x = c("Country", 'Year'), by.y = c('Country', "Time"))
+temp_gdp_pollution = temp_gdp_pollution[, c(1, 2, 3, 16, 31)]
+colnames(temp_gdp_pollution) = c("Country", "Year", "Temperature Change", "GDP", "Population")
+
+ggparcoord(temp_gdp_pollution, columns = 3:5, alpha = 0.5, scale = "uniminmax") 
+
+ggparcoord(log(temp_gdp_pollution[, c(3,4, 5)]), alpha = 0.5, scale = "uniminmax")
+
+
+
+```
+
+## Sea Level Change and Sea Ice
+
+```{r}
+sea_level_change$Date = substring(sea_level_change$Date, 2)
+sea_level_change$Date = gsub("/", "-", sea_level_change$Date)
+sea_level_change$Date = as.Date(sea_level_change$Date, format = "%m-%d-%Y")
+
+sl_group = sea_level_change %>%
+  group_by(Date) %>%
+  summarize(mean_change = mean(Value))
+
+sl_group_new = sl_group
+sl_group_new$Date = substring(sl_group_new$Date, 1, 4)
+
+sl_group_new_tidy = sl_group_new %>%
+  group_by(Date) %>%
+  summarise(average = mean(mean_change))
+
+colnames(sl_group_new_tidy) = c("Year", 'Average_SL_Change')
+
+ggplot(data = sl_group_new_tidy, aes(x = Year, y = Average_SL_Change)) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 90))
+
+
+```
+
+## Temperature Change and Greenhouse Gases
+
+```{r}
+df_temp_subset_1990 = df_temp_subset
+df_temp_subset_1990 = df_temp_subset_1990[df_temp_subset_1990$Year >= 1990,]
+df_temp_subset_1990$Country = as.character(df_temp_subset_1990$Country)
+df_temp_subset_1990$Country[df_temp_subset_1990$Country == "China, P.R.: Mainland"] = "China"
+
+```

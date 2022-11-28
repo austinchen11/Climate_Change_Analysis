@@ -58,7 +58,9 @@ library(reshape2)
 temp_change = temp_change[, -c(1)]
 
 ghg_chen = subset(df_ghg, Country %in% c("China","United States","India","France","Japan","Germany","Italy","United Kingdom","Mexico","Indonesia"))
+
 ghg_chen <- ghg_chen %>% mutate_all(as.character) %>% pivot_longer(cols = -c("Country","Data.source","Sector","Gas","Unit"), names_to = "Year", values_to = "value", names_prefix = "X")
+
   
 subset(temp_change_removed, Country %in% c('United States', 'India', 'Japan', 'Germany', 'Indonesia', 'France', 'Brazil', 'United Kingdom', 'Italy', 'Mexico', 'China, P.R.: Mainland'))
 
@@ -84,8 +86,10 @@ library(forcats)
 ```
 
 ```{r}
+
 temp_change_removed['average'] = rowMeans(temp_change_removed[, -c(1, 2)])
 temp_ordered_average = temp_change_removed[order(temp_change_removed$average, decreasing = TRUE),]
+
 df_temp_subset$Year = substring(df_temp_subset$Year, 2)
 df_temp_subset_1970 = df_temp_subset[df_temp_subset$Year >= 1970,]
 
@@ -133,8 +137,6 @@ sl_change_mean = sea_level_change_region %>%
 ggplot(data = sea_level_change, aes(x = Date, y =Value)) +
   geom_line() +
   facet_wrap(~Measure)
-
-
 
 ggplot(data = sea_level_change, aes(Date, y = Value, group = Measure, color = Measure)) +
   geom_line() 
@@ -188,7 +190,7 @@ df_temp_subset_1990$Country = as.character(df_temp_subset_1990$Country)
 df_temp_subset_1990$Country[df_temp_subset_1990$Country == "China, P.R.: Mainland"] = "China"
 
 temp_ghg = merge(df_temp_subset_1990, ghg_chen, by.x = c("Country", "Year"),  by.y = c("Country", "Year"))
-temp_ghg$Year = as.factor(temp_ghg$Year )
+temp_ghg$Year = as.factor(temp_ghg$Year)
 
 ggplot(data = temp_ghg, aes(x = Value, y = value)) +
   geom_point() +
