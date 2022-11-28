@@ -200,6 +200,19 @@ ggplot(data = sl_group_new_tidy, aes(x = Year, y = Average_SL_Change)) +
 
 ```
 
+```{r}
+df_icevolume <- read.csv("Kelly_draft/PIOMAS_monthly.csv")
+df_icevolume["average"] = rowMeans(df_icevolume[, -c(1)])
+
+fig3_icevolume <- ggplot(df_icevolume, aes(x=year,y=average)) + 
+  geom_line() + 
+  geom_point() + 
+  ggtitle("Change in Ice Volume") +
+  xlab("Year") + ylab("Ice Volume")
+
+plot(fig3_icevolume)
+```
+
 ## Temperature Change and Greenhouse Gases
 
 ```{r}
@@ -208,4 +221,31 @@ df_temp_subset_1990 = df_temp_subset_1990[df_temp_subset_1990$Year >= 1990,]
 df_temp_subset_1990$Country = as.character(df_temp_subset_1990$Country)
 df_temp_subset_1990$Country[df_temp_subset_1990$Country == "China, P.R.: Mainland"] = "China"
 
+```
+
+```{r}
+df_ghg <- read.csv("Kelly_draft/ghg.csv")
+df_ghg1 <- subset(df_ghg, Country %in% c("China","United States","India","Russia","Japan","Germany","Iran","South Korea","Saudi Arabia","Indonesia"))
+
+df_ghg2 <- df_ghg1 %>% mutate_all(as.character) %>% pivot_longer(cols = -c("Country","Data.source","Sector","Gas","Unit"), names_to = "Year", values_to = "value", names_prefix = "X")
+
+fig_ghg2 <- ggplot(df_ghg2, aes(x=Year,y=as.numeric(value), color=Country,group=Country)) + 
+  geom_line() + 
+  geom_point() + theme(axis.text.x = element_text(angle = 90)) +
+  ggtitle('Changes in Green House Gas') + xlab('Year') 
+
+plot(fig_ghg2)
+```
+
+```{r}
+ggplot(df_ghg2,aes(x=Year,y=as.numeric(value),fill=Country))+geom_bar(stat='identity')
+```
+```{r}
+fig2_ghg_country <- ggplot(df_ghg2, aes(x=Year,y=as.numeric(value), group=Country)) + 
+  geom_line() + 
+  geom_point() + theme(axis.text.x = element_text(angle = 90)) + facet_wrap(~Country, scale="free_y",nrow=5) +
+  ggtitle('Changes in Green House Gas by Countries')
+
+plot(fig2_ghg_country)
+```
 ```
