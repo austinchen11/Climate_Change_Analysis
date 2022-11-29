@@ -125,6 +125,7 @@ ggplot(data = sea_level_change, aes(x = reorder(Measure, Value, median), y = Val
 ## Temperature Change and GDP
 
 ```{r}
+
 df_temp_subset_1970 = df_temp_subset[df_temp_subset$Year >= 1970,]
 df_temp_subset_1970$Country = as.character(df_temp_subset_1970$Country)
 df_temp_subset_1970$Country[df_temp_subset_1970$Country == "China, P.R.: Mainland"] = "China (People's Republic of)"
@@ -136,7 +137,7 @@ temperature_gdp = merge(df_temp_subset_1970, df_gdp_chen, by.x = c("Country", 'Y
 
 ggplot(data = temperature_gdp, aes(x = Value.x, y = Value.y)) +
   geom_point() +
-  facet_wrap(~Country)
+  facet_wrap(~Country, scale="free_y")
 
 ggplot(data = temperature_gdp, aes(x = Value.x, y = Value.y,)) +
   geom_point() 
@@ -151,7 +152,7 @@ temperature_population = merge(df_temp_subset_1970, df_population, by.x = c("Cou
 
 ggplot(data = temperature_population, aes(x = Value.x, y = Value.y)) +
   geom_point() +
-  facet_wrap(~Country)
+  facet_wrap(~Country, scale="free_y")
 
 ggplot(data = temperature_population, aes(x = Value.x, y = Value.y)) +
   geom_point() 
@@ -191,11 +192,21 @@ sl_group_new_tidy = sl_group_new %>%
   group_by(Date) %>%
   summarise(average = mean(mean_change))
 
-colnames(sl_group_new_tidy) = c("Year", 'Average_SL_Change')
+colnames(sl_group_new_tidy) = c("year", 'Average_SL_Change')
 
-ggplot(data = sl_group_new_tidy, aes(x = Year, y = Average_SL_Change)) +
+ggplot(data = sl_group_new_tidy, aes(x = year, y = Average_SL_Change)) +
   geom_point() +
   theme(axis.text.x = element_text(angle = 90))
+
+df_icevolume_new = df_icevolume
+df_icevolume_new = df_icevolume_new[df_icevolume_new$year >= 1992, ]
+
+ice_sea = merge(sl_group_new_tidy, df_icevolume_new, by = "year")
+
+ggplot(data = ice_sea, aes(Average_SL_Change, average)) + 
+  geom_point() + 
+  geom_line() + 
+  geom_smooth(method = "lm", se = FALSE)
 
 
 ```
@@ -220,6 +231,22 @@ df_temp_subset_1990 = df_temp_subset
 df_temp_subset_1990 = df_temp_subset_1990[df_temp_subset_1990$Year >= 1990,]
 df_temp_subset_1990$Country = as.character(df_temp_subset_1990$Country)
 df_temp_subset_1990$Country[df_temp_subset_1990$Country == "China, P.R.: Mainland"] = "China"
+
+ghg_chen = subset(df_ghg, Country %in% c("China","United States","India","France","Japan","Germany","Italy","United Kingdom","Mexico","Indonesia"))
+
+ghg_chen <- ghg_chen %>% mutate_all(as.character) %>% pivot_longer(cols = -c("Country","Data.source","Sector","Gas","Unit"), names_to = "Year", values_to = "value", names_prefix = "X")
+
+temp_ghg = merge(df_temp_subset_1990, ghg_chen, by.x = c("Country", "Year"),  by.y = c("Country", "Year"))
+temp_ghg$Year = as.factor(temp_ghg$Year)
+
+ggplot(data = temp_ghg, aes(x = Value, y = as.numeric(value))) +
+  geom_line() +
+  facet_wrap(~Country,scale="free_y")
+
+ggplot(data = temp_ghg, aes(x = Value, y = as.numeric(value))) +
+  geom_point() +
+  geom_line() 
+
 
 ```
 
@@ -248,4 +275,4 @@ fig2_ghg_country <- ggplot(df_ghg2, aes(x=Year,y=as.numeric(value), group=Countr
 
 plot(fig2_ghg_country)
 ```
-```
+
