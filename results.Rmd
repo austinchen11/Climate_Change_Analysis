@@ -252,7 +252,7 @@ ggplot(data = temp_ghg, aes(x = Value, y = as.numeric(value))) +
 
 ```{r}
 df_ghg <- read.csv("Kelly_draft/ghg.csv")
-df_ghg1 <- subset(df_ghg, Country %in% c("China","United States","India","Russia","Japan","Germany","Iran","South Korea","Saudi Arabia","Indonesia"))
+df_ghg1 <- subset(df_ghg, Country %in% c("China","United States","India","France","Japan","Germany","Italy","United Kingdom","Mexico","Indonesia"))
 
 df_ghg2 <- df_ghg1 %>% mutate_all(as.character) %>% pivot_longer(cols = -c("Country","Data.source","Sector","Gas","Unit"), names_to = "Year", values_to = "value", names_prefix = "X")
 
