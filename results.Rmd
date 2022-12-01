@@ -255,7 +255,7 @@ ggplot(data = temp_ghg, aes(x = Value, y = as.numeric(value))) +
 
 ```{r}
 df_ghg <- read.csv("Kelly_draft/ghg.csv")
-df_ghg1 <- subset(df_ghg, Country %in% c("China","United States","India","Russia","Japan","Germany","Iran","South Korea","Saudi Arabia","Indonesia"))
+df_ghg1 <- subset(df_ghg, Country %in% c("China","United States","India","France","Japan","Germany","Italy","United Kingdom","Mexico","Indonesia","Brazil"))
 
 df_ghg2 <- df_ghg1 %>% mutate_all(as.character) %>% pivot_longer(cols = -c("Country","Data.source","Sector","Gas","Unit"), names_to = "Year", values_to = "value", names_prefix = "X")
 
@@ -278,4 +278,26 @@ fig2_ghg_country <- ggplot(df_ghg2, aes(x=Year,y=as.numeric(value), group=Countr
 
 plot(fig2_ghg_country)
 ```
+# Agriculture and forestland
+```{r}
+df_landuse <- read.csv("Kelly_draft/landuse.csv")
+df_landuse_Agriculture <- subset(df_landuse, Area %in% c("China","United States of America","India","France","Japan","Germany","Italy","United Kingdom","Mexico","Indonesia","Brazil") & Item %in% "Agriculture")
 
+fig4_Agriculture_country <- ggplot(df_landuse_Agriculture, aes(x=Year,y=as.numeric(Value),group=Area)) + 
+  geom_line() + 
+  geom_point() + facet_wrap(~Area, scale="free_y") + theme(axis.text.x = element_text(angle = 90)) + 
+  ggtitle('Changes in Agricultural Area by Countries')
+
+plot(fig4_Agriculture_country)
+```
+```{r}
+df_forest <- read.csv("Kelly_draft/forest.csv")
+df_forest1 <- subset(df_forest, Area %in% c("China","United States of America","India","France","Japan","Germany","Italy","United Kingdom","Mexico","Indonesia","Brazil") & Item %in% "Forestland" & Element %in% "Area" & Source %in% "FAO TIER 1")
+
+fig1_forest <- ggplot(df_forest1, aes(x=Year,y=as.numeric(Value),group=Area)) + 
+  geom_line() + 
+  geom_point() + facet_wrap(~Area, scale="free_y") +
+  ggtitle('Changes in Forest Area') + xlab('Year') + ylab('Forest Area / 1000 ha')
+
+plot(fig1_forest)
+```
