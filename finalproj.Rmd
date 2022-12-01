@@ -1,3 +1,82 @@
+--- 
+title: "Climate Change Analysis and Visualization"
+author: "Austin Chen, Kelly Du, Dianjing Fan"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+---
+--- 
+title: "Climate Change Analysis and Visualization"
+author: "Austin Chen, Kelly Du, Dianjing Fan"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+---
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+# Introduction
+
+<!--chapter:end:index.Rmd-->
+
+
+# Proposal
+
+Placeholder
+
+
+## Research topic
+## Data availability
+### Annual Surface Temperature Change
+### Atmospheric Carbon Dioxide Concentrations
+### Change in Mean Sea Levels
+### Climate Related Disasters Frequency
+### Change in Sea Ice Volume
+### Greenhouse Gas Emission
+### Change in Forests
+### Land Use
+### Population
+### Population growth
+### GDP
+### Air pollution
+
+<!--chapter:end:proposal.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Data 
+
+## Sources
+
+
+## Cleaning / transformation
+
+```{r}
+
+```
+## Missing value analysis
+
+```{r}
+
+```
+
+<!--chapter:end:data.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
 # Results
 
 ## GDP
@@ -167,7 +246,7 @@ temp_gdp_pollution = merge(temperature_gdp, df_population, by.x = c("Country", '
 temp_gdp_pollution = temp_gdp_pollution[, c(1, 2, 3, 16, 31)]
 colnames(temp_gdp_pollution) = c("Country", "Year", "Temperature Change", "GDP", "Population")
 
-ggparcoord(temp_gdp_pollution, columns = 3:5, alpha = 0.5) 
+ggparcoord(temp_gdp_pollution, columns = 3:5, alpha = 0.5, scale = "uniminmax") 
 
 ggparcoord(log(temp_gdp_pollution[, c(3,4, 5)]), alpha = 0.5, scale = "uniminmax")
 
@@ -218,6 +297,7 @@ ggplot(data = ice_sea, aes(Average_SL_Change, average)) +
 
 ```{r}
 
+
 fig3_icevolume <- ggplot(df_icevolume, aes(x=year,y=average)) + 
   geom_line() + 
   geom_point() + 
@@ -234,7 +314,7 @@ df_temp_subset_1990 = df_temp_subset
 df_temp_subset_1990 = df_temp_subset_1990[df_temp_subset_1990$Year >= 1990,]
 df_temp_subset_1990$Country = as.character(df_temp_subset_1990$Country)
 df_temp_subset_1990$Country[df_temp_subset_1990$Country == "China, P.R.: Mainland"] = "China"
-df_ghg <- read.csv("Kelly_draft/ghg.csv")
+
 ghg_chen = subset(df_ghg, Country %in% c("China","United States","India","France","Japan","Germany","Italy","United Kingdom","Mexico","Indonesia"))
 
 ghg_chen <- ghg_chen %>% mutate_all(as.character) %>% pivot_longer(cols = -c("Country","Data.source","Sector","Gas","Unit"), names_to = "Year", values_to = "value", names_prefix = "X")
@@ -278,4 +358,32 @@ fig2_ghg_country <- ggplot(df_ghg2, aes(x=Year,y=as.numeric(value), group=Countr
 
 plot(fig2_ghg_country)
 ```
+
+
+<!--chapter:end:results.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Interactive component
+
+
+
+<!--chapter:end:interactive.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Conclusion
+
+
+<!--chapter:end:conclusion.Rmd-->
 

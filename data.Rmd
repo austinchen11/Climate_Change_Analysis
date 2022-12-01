@@ -2,7 +2,35 @@
 
 ## Sources
 
+The topic of our project - "Climate Change" - is by nature, broad; therefore, in order to answer the various questions of concern/interest, we had to incorporate many different data sources.  We will describe each of them below:
+
+### Annual Surface Temperature Change
+https://climatedata.imf.org/datasets/4063314923d74187be9596f10d034914/explore 
+https://www.fao.org/faostat/en/#data/ET 
+
+This data set showcases the annual estimates of mean surface temperature change from 1961 to 2021 by country, with respect to a baseline climatology (defined as the period of 1951 to 1980).  The Food and Agriculture Organization of the United Nations is the group that is responsible for compiling this data for public use; however, it seems like the FAO retrieves the data from elsewhere.  According to its website, the information comes from the publicly available GISTEMP data, managed by NASA-GISS.  With climate data, there are always a multitude of sources/options available, but I chose this specific website due to the accessible and downloadable CSV file, and the plethora of references it included.  The CSV file includes 227 different countries, each with time series data from 1961 to 2021.  Although there are other columns in the CSV, they are not relevant for our analysis.  There are two main issues with the data: missing values and messy format.  Both of these issues are easily dealt with using some data manipulation in R. 
+
+
+### Atmospheric Carbon Dioxide Concentrations
+https://climatedata.imf.org/datasets/9c3764c0efcc4c71934ab3988f219e0e/explore 
+https://gml.noaa.gov/ccgg/trends/ 
+
+This data set showcases the monthly atmospheric carbon dioxide levels, presented at the World level in parts per million (ppm). The data is collected by the Global Monitoring Laboratory of NOAA (specifically measured at Mauna Loa Observatory, Hawaii).  The data from this region actually constitutes the longest running direct measurement of carbon dioxide in the world.  There were other measures of carbon dioxide available, but since most climate analysis utilizes the data from Mauna Loa, I did not want to deviate from that.  The CSV file includes 1536 rows, with the world carbon dioxide concentration (in percent and parts per million) from 1958 to 2022.  There are other categorical variables in the data that are not necessary for our analysis.  The data itself is relatively clean; however, the format of file (like changing the dates into the correct format) will need to be slightly tweaked.  
+
+### Change in Mean Sea Levels
+https://climatedata.imf.org/datasets/b84a7e25159b4c65ba62d3f82c605855/explore 
+
+This data set showcases the changes in mean sea levels across 24 regions of the world, and the specific measurements (in millimeters) are estimated from satellite radar altimeters.  The data is collected by the Laboratory for Satellite Altimetry from NOAA.  These estimates of sea level rise are based on measurements from satellite radar altimeters. These satellites "basically determine the distance from the satellite to a target surface by measuring the satellite-to-surface round-trip time of a radar pulse."  Like the previous data sources, I chose it due to the reputation of NOAA as an organization.  The CSV file has 35,379 rows, which encompasses the time series sea level change data from 1992 to 2022 for 24 regions around the world.  Other categorical variables exist, but are not necessary for our analysis. The data does not have any apparent issues, but the formatting (like with most data) will have to be tailored to our specific project
+
+
+
 ## Cleaning / transformation
 
+```{r}
+
+```
 ## Missing value analysis
 
+```{r}
+
+```

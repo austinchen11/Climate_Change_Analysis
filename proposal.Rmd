@@ -12,7 +12,7 @@ With climate change being such a forefront issue in the world today, there are v
 https://climatedata.imf.org/datasets/4063314923d74187be9596f10d034914/explore 
 https://www.fao.org/faostat/en/#data/ET 
 
-This data set showcases the annual estimates of mean surface temperature change from 1961 to 2021 by country, with respect to a baseline climatology (defined as the period of 1951 to 1980).  The data comes from the Food and Agriculture Organization of the United Nations (FAO), and is updated annualy, as it is a yearly time series data.  The data is downloadable as a csv file, which can easily be read into R Studios.
+This data set showcases the annual estimates of mean surface temperature change from 1961 to 2021 by country, with respect to a baseline climatology (defined as the period of 1951 to 1980).  The data comes from the Food and Agriculture Organization of the United Nations (FAO), and is updated annually, as it is a yearly time series data.  The data is downloadable as a csv file, which can easily be read into R Studios.
 
 ### Atmospheric Carbon Dioxide Concentrations
 
