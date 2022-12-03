@@ -20,17 +20,50 @@ This data set showcases the monthly atmospheric carbon dioxide levels, presented
 ### Change in Mean Sea Levels
 https://climatedata.imf.org/datasets/b84a7e25159b4c65ba62d3f82c605855/explore 
 
-This data set showcases the changes in mean sea levels across 24 regions of the world, and the specific measurements (in millimeters) are estimated from satellite radar altimeters.  The data is collected by the Laboratory for Satellite Altimetry from NOAA.  These estimates of sea level rise are based on measurements from satellite radar altimeters. These satellites "basically determine the distance from the satellite to a target surface by measuring the satellite-to-surface round-trip time of a radar pulse."  Like the previous data sources, I chose it due to the reputation of NOAA as an organization.  The CSV file has 35,379 rows, which encompasses the time series sea level change data from 1992 to 2022 for 24 regions around the world.  Other categorical variables exist, but are not necessary for our analysis. The data does not have any apparent issues, but the formatting (like with most data) will have to be tailored to our specific project
+This data set showcases the changes in mean sea levels across 24 regions of the world, and the specific measurements (in millimeters) are estimated from satellite radar altimeters.  The data is collected by the Laboratory for Satellite Altimetry from NOAA.  These estimates of sea level rise are based on measurements from satellite radar altimeters. These satellites "basically determine the distance from the satellite to a target surface by measuring the satellite-to-surface round-trip time of a radar pulse."  Like the previous data sources, I chose it due to the reputation of NOAA as an organization.  The CSV file has 35,379 rows, which encompasses the time series sea level change data from 1992 to 2022 for 24 regions around the world.  Other categorical variables exist, but are not necessary for our analysis. The data does not have any apparent issues, but the formatting (like with most data) will have to be tailored to our specific project.
 
+### GDP and Population
+https://stats.oecd.org/index.aspx?DataSetCode=PDB_LV
 
+This data set showcases the level of GDP per capita and productivity, including GDP, total population, GDP per head of population, GDP per hour worked, GDP per person employed, etc. in different countries from 1970 to 2021. The data is collected by Organisation for Economic Co-operation and Development (OECD) and updated regularly. This data set can be downloaded as a csv file, containing 51,746 entries and 17 columns. It is well formatted and does not contain any null values, thus does not require data cleaning and preprocessing.
+
+### Air Pollution
+https://www.who.int/data/gho/data/themes/air-pollution/who-air-quality-database
+https://www.iqair.com/us/world-most-polluted-countries
+
+The first dataset showcases PM2.5, PM10, and NO2 concentration and temporal coverage from 2010 to 2018 in different countries and cities. The data is collected by WHO, and as described on the website, "the primary sources of data were official reports of countries sent to WHO upon request." It can be downloaded as an excel file and contains 32191 entries and 15 columns. This dataset contains null values and other irrelevant information, thus it requires cleaning and preprocessing.
+Since we want to compare the air pollution before and after the rise of Covid-19, around 2019, we found another dataset which contains more up-to-date information. The second dataset from IQAir showcases PM2.5 concentration from 2018 to 2021 in 117 countries and contains 472 entries and 5 columns. The data cannot be downloaded, therefore, we choose to do web scraping and perform further cleaning and transformation. Finally, we combine these two datasets and do further analysis.
 
 ## Cleaning / transformation
+### GDP and Population
+The original dataset about GDP is from the United Nations, which showcases the GDP by country from 1970 to 2020. However, after plotting GDP values against year grouped by country, we found that the GDP of Japan and the US are two outliers, which have GDP much higher than other countries. Comparing this data with the other information we found, we concluded that this dataset contains wrong information and decided to search for other datasets.
 
-```{r}
+The original dataset about population is from United Nations, containing total population and population growth in different countries in 2010, 2015, 2017, and 2022. After exploring the data, we realized that we need more datapoints in terms of year.
 
-```
+Therefore, we decided to use a new dataset from OECD which contains more comprehensive data, including the GDP, population, and other information in each country from 1970 to 2021.
+
+### Air Pollution
+The first air pollution dataset from WHO contains PM2.5 concentration in different cities. We drop all the null values and compute the average PM2.5 concentration among all the cities in each country in each year. We scrape the second dataset from IQAir website, and convert it from wide to long format.
+
+We select PM2.5 concentration from countries with top 11 highest GDP and combine these two datasets for further analysis.
+
+
 ## Missing value analysis
 
+### Air Pollution
 ```{r}
+library(openxlsx)
+library(mi)
+df_who_air_pollution <- read.xlsx("data/who_air_pollution.xlsx", sheet = 2)
 
+x <- missing_data.frame(df_who_air_pollution)
+image(x)
 ```
+The air pollution dataset from WHO contains many null values, specifically in 7 columns named PM2.5 (μg/m3), PM10 (μg/m3), NO2 (μg/m3), PM25 temporal coverage (%), PM10 temporal coverage (%), NO2 temporal coverage (%), Number and type of monitoring stations. We focus on PM2.5 (μg/m3) values. We drop the rows which are NAs in this column. Since we compute the average for each country, dropping null values has little impact on our results.
+
+
+
+
+
+
+

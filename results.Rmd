@@ -16,7 +16,7 @@ top10_gdp_2021 <- df_gdp[df_gdp$Subject == "Gross Domestic Product (GDP); millio
 top10_gdp_2021[ order(top10_gdp_2021$Value,decreasing = TRUE), ][0:14,]
 ```
 
-From the GDP dataset, we found that the top ten countries which have the highest GDP in 2021 (in USD, current prices, current PPPs) are: USA, India, Japan, Germany, Indonesia, France, Brazil, UK, Italy, Mexico. The dataset doesn't contain China's GDP value in 2021 (but does contain from 1970-2020); this is not reflected as a null value in the dataset. Since China's GDP is also among the highest in the world before, we decided to include USA, India, Japan, Germany, Indonesia, France, Brazil, UK, Italy, Mexico, and China in our future analysis.
+From the GDP dataset, we found that the top ten countries which have the highest GDP in 2021 (in USD, current prices, current PPPs) are: USA, India, Japan, Germany, Indonesia, France, Brazil, UK, Italy, Mexico. The dataset doesn't contain China's GDP value in 2021 (but does contain from 1970-2020); this is not reflected as a null value in the dataset. Since China's GDP is also among the highest in the world before, we decided to include 11 countries: USA, India, Japan, Germany, Indonesia, France, Brazil, UK, Italy, Mexico, and China in our future analysis.
 
 ```{r}
 country_gdp = c("United States", "India", "Japan", "Germany", "Indonesia", "France", "Brazil", "United Kingdom", "Italy", "Mexico", "China (People's Republic of)")
@@ -27,7 +27,7 @@ fig_gdp2 <- ggplot( subset(df_gdp, Country %in% country_gdp & Subject %in% "Gros
        y = "GDP")
 plot(fig_gdp2)
 ```
-
+From the plot, we can see that China and US's GDP are much higher than other countries from 2010 to present. China's GDP is relatively low before 1990, but it grows rapidly and exceeds US's GDP from 2017 until present. India's GDP is also growing rapidly in recent years. Other countries' GDP are growing steadily.
 
 ## Population
 ```{r}
@@ -38,6 +38,8 @@ fig_pop1 <- ggplot( subset(df_gdp, Country %in% country_gdp & Subject %in% "Tota
        y = "Population")
 plot(fig_pop1)
 ```
+China and India are the top 2 countries which have highest population and population growth rate from 1970 to 2021. China has about 1.42 billion people and India has 1.41 billion in 2021. US, Indonesia, and Brazil ranks the 3rd, 4th, and 5th by population. Other countries' population grows steadily.
+
 
 ## Air Pollution
 ```{r}
@@ -56,9 +58,10 @@ ggplot( air_combined, aes(x = year, y = value, color = country, group = country)
        y = "PM 2.5 concentration (μg/m3)")
 
 ```
+There is a jump in India's PM2.5 concentration before and after 2017, and the data is missing before 2016. It is reasonable that the data are inconsistent since the dataset is combined from two datasets. The data from other countries are consistent.
+From the IQAir website, the PM2.5 concentration from 0-5 μg/m3 meets WHO guidelines. We can see that China is the most polluted country before 2017, but the air pollution index continues decreasing and in 2021, China's PM2.5 index is 32.6 μg/m3. India and Indonesia are the top 2 most polluted countries in 2021, with PM2.5 concentration 58.1 and 34.3 μg/m3. Other countries have relatively low air pollution.
 
-There is a jump in India's PM2.5 concentration before and after 2017, and the data is missing before 2016. It is reasonable that the data before and after 2017 is inconsistent since the dataset is combined from one dataset from WHO, containing PM2.5 concentration data from 2010 to 2017, and one dataset from IQAir, containing PM2.5 concentration data from 2018 to 2021. The data from other countries are consistent.
-
+Our analysis of this graph focus on the impact of Covid-19 on air pollution. Since during the pandemic, there are less outside activities. We compare the data before and after 2019 and see if there is a decreasing trend after Covid-19, as we expected. China and Indonesia's air pollution value decrease rapidly; Brazil, Italy, Japan, and Mexico have a slight decrease; France, Germany, UK are steady; India and US's air pollution value increase. The trend and the impact of Covid-19 are different for each country. Air pollution values are affected by multiple factors.
 
 
 ## Carbon Dioxide
