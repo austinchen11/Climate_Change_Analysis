@@ -23,14 +23,77 @@ https://climatedata.imf.org/datasets/b84a7e25159b4c65ba62d3f82c605855/explore
 This data set showcases the changes in mean sea levels across 24 regions of the world, and the specific measurements (in millimeters) are estimated from satellite radar altimeters.  The data is collected by the Laboratory for Satellite Altimetry from NOAA.  These estimates of sea level rise are based on measurements from satellite radar altimeters. These satellites "basically determine the distance from the satellite to a target surface by measuring the satellite-to-surface round-trip time of a radar pulse."  Like the previous data sources, I chose it due to the reputation of NOAA as an organization.  The CSV file has 35,379 rows, which encompasses the time series sea level change data from 1992 to 2022 for 24 regions around the world.  Other categorical variables exist, but are not necessary for our analysis. The data does not have any apparent issues, but the formatting (like with most data) will have to be tailored to our specific project
 
 
-
 ## Cleaning / transformation
 
-```{r}
+Most of the data used in this project are Time Series data for different countries of the world; therefore, depending on the type of graph or type of merge/join we want to accomplish, the cleaning/transformation will differ.  We will denote some of them below:
 
+### Annual Surface Temperature Change
+
+The temperature change data set included quite a bit of unnecessary categorical columns, therefore, as noted by the code snippet below, I removed them from the data frame.  Furthermore, missing values were simply omitted from the data set for a more complete analysis going forward.  In order to transform the data into a format that was easily graph-able, I used the function "melt" from the reshape2 library, which allowed for easier time series plotting.  Lastly, our group unanimously decided to only analyze the top 11 countries (based on GDP), since it is nearly impossible to evaluate 200+ countries of the world.
+
+```{r}
+temp_change = read.csv('data/Annual_Surface_Temperature_Change.csv', stringsAsFactors = TRUE)
+temp_change = temp_change[, -c(3, 4, 5, 6 ,7 ,8 ,9, 10)]
+temp_change = temp_change[, -c(1)]
+temp_change_removed = na.omit(temp_change)
+
+library(reshape2)
+
+df_temp <- melt(subset(temp_change_removed, Country %in% c('United States', 'India', 'Japan', 'Germany', 'Indonesia', 'France', 'Brazil', 'United Kingdom', 'Italy', 'Mexico', 'China, P.R.: Mainland')), id.vars=c("Country"),value.name="Value", variable.name="Year")
+
+df_temp_subset = subset(df_temp, Country %in% c('United States', 'India', 'Japan', 'Germany', 'Indonesia', 'France', 'Brazil', 'United Kingdom', 'Italy', 'Mexico', 'China, P.R.: Mainland'))
+
+df_temp_subset$Year = substring(df_temp_subset$Year, 2)
 ```
+
+### Atmospheric Carbon Dioxide Concentrations
+
+The carbon dioxide data set did not require much transformation, as I only needed to remove some unnecessary columns and make sure all of the measurements were in parts per million.
+
+```{r}
+world_co2 = read.csv('data/Atmospheric_CO%E2%82%82_Concentrations.csv', stringsAsFactors = TRUE)
+world_co2 = world_co2[, -c(1, 3, 4, 5, 7, 8, 9, 10)]
+world_co2 = world_co2[world_co2$Unit == "Parts Per Million", ]
+```
+
+### Change in Mean Sea Levels
+
+The sea level change data set required quite a bit of transformation before it was plot-ready.  First, all of the unnecessary categorical  variables were removed, and the "Date" column was formatted into a more traditional Date format.  Furthermore, multiple "group_by"s were conducted in order to output the mean sea level change of each calendar year for each of the regions included in the data set.  
+
+```{r}
+sea_level_change = read.csv("data/Change_in_Mean_Sea_Levels.csv", stringsAsFactors = TRUE)
+sea_level_change = sea_level_change[, -c(1:10)]
+sea_level_change$Date = substring(sea_level_change$Date, 2)
+sea_level_change$Date = gsub("/", "-", sea_level_change$Date)
+sea_level_change$Date = as.Date(sea_level_change$Date, format = "%m-%d-%Y")
+
+sl_group = sea_level_change %>%
+  group_by(Date) %>%
+  summarize(mean_change = mean(Value))
+
+sl_group_new = sl_group
+sl_group_new$Date = substring(sl_group_new$Date, 1, 4)
+
+sl_group_new_tidy = sl_group_new %>%
+  group_by(Date) %>%
+  summarise(average = mean(mean_change))
+
+colnames(sl_group_new_tidy) = c("year", 'Average_SL_Change')
+```
+
 ## Missing value analysis
 
-```{r}
+Two of our data sets included some missing values; we will denote their analysis below.
 
+### Annual Surface Temperature Change
+
+```{r fig.width=6, fig.height=5}
+colSums(is.na(temp_change))
+
+library(mi)
+x = missing_data.frame(temp_change)
+image(x)
 ```
+
+
+

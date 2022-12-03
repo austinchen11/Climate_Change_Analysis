@@ -13,6 +13,7 @@ library(tidyr)
 ```{r}
 df_gdp <- read.csv("data/gdp.csv")
 top10_gdp_2021 <- df_gdp[df_gdp$Subject == "Gross Domestic Product (GDP); millions" & df_gdp$TIME == 2021 & df_gdp$Measure == "USD, current prices, current PPPs",]
+
 top10_gdp_2021[ order(top10_gdp_2021$Value,decreasing = TRUE), ][0:14,]
 ```
 
@@ -70,7 +71,7 @@ world_co2 = world_co2[world_co2$Unit == "Parts Per Million", ]
 
 
 
-ggplot(data = world_co2, aes(x = Date, y = Value)) +
+ggplot(data = world_co2[], aes(x = Date, y = Value)) +
   geom_point() +
   labs(title = "World Carbon Dioxide Concentration From 1958 to 2022",
        x = "Year",
@@ -87,6 +88,7 @@ temp_change = temp_change[, -c(1)]
 temp_change_removed = na.omit(temp_change)
 
 library(reshape2)
+
 df_temp <- melt(subset(temp_change_removed, Country %in% c('United States', 'India', 'Japan', 'Germany', 'Indonesia', 'France', 'Brazil', 'United Kingdom', 'Italy', 'Mexico', 'China, P.R.: Mainland')), id.vars=c("Country"),value.name="Value", variable.name="Year")
 
 df_temp_subset = subset(df_temp, Country %in% c('United States', 'India', 'Japan', 'Germany', 'Indonesia', 'France', 'Brazil', 'United Kingdom', 'Italy', 'Mexico', 'China, P.R.: Mainland'))
@@ -119,7 +121,6 @@ ggplot(data = sea_level_change, aes(x = Date, y = Value, group = Measure, color 
 ggplot(data = sea_level_change, aes(x = reorder(Measure, Value, median), y = Value)) +
   geom_boxplot() +
   theme(axis.text.x = element_text(angle = 90))
-
 
 ```
 
@@ -213,11 +214,6 @@ ggplot(data = ice_sea, aes(Average_SL_Change, average)) +
   geom_line() + 
   geom_smooth(method = "lm", se = FALSE)
 
-
-```
-
-```{r}
-
 fig3_icevolume <- ggplot(df_icevolume, aes(x=year,y=average)) + 
   geom_line() + 
   geom_point() + 
@@ -225,6 +221,7 @@ fig3_icevolume <- ggplot(df_icevolume, aes(x=year,y=average)) +
   xlab("Year") + ylab("Ice Volume")
 
 plot(fig3_icevolume)
+
 ```
 
 ## Temperature Change and Greenhouse Gases

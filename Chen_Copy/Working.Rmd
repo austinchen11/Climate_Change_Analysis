@@ -203,4 +203,25 @@ ggplot(data = temp_ghg, aes(x = Year, y = value, group = Country, color = Countr
 
 ```
 
+```{r}
+interactive_sea = sea_level_change
+interactive_sea$Date = substr(interactive_sea$Date, 1, 4)
+
+interactive_sea_tidy = interactive_sea %>%
+  group_by(Date, Measure) %>%
+  summarise(Sea_lvl_change = mean(Value))
+
+table(interactive_sea_tidy$Measure)
+
+ggplot(data = interactive_sea_tidy, aes(x = Date, y = Sea_lvl_change, group = Measure, colour = Measure)) + 
+  geom_line() + 
+  theme(axis.text.x = element_text(angle = 90))
+
+ggplot(data = interactive_sea_tidy, aes(x = reorder(Measure, Sea_lvl_change, median), y = Sea_lvl_change)) +
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 90))
+
+
+
+```
 
