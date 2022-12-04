@@ -67,24 +67,37 @@ Our analysis of this graph focus on the impact of Covid-19 on air pollution. Sin
 
 ## Carbon Dioxide
 
-```{r}
+```{r fig.width = 7, fig.height= 4}
 world_co2 = read.csv('data/Atmospheric_CO%E2%82%82_Concentrations.csv', stringsAsFactors = TRUE)
 world_co2 = world_co2[, -c(1, 3, 4, 5, 7, 8, 9, 10)]
 world_co2 = world_co2[world_co2$Unit == "Parts Per Million", ]
 
+world_co2$Date = gsub("M","-", world_co2$Date)
 
-
-ggplot(data = world_co2[], aes(x = Date, y = Value)) +
+g1 = ggplot(data = world_co2, aes(x = Date, y = Value)) +
   geom_point() +
   labs(title = "World Carbon Dioxide Concentration From 1958 to 2022",
        x = "Year",
-       y = "Carbon Dioxide (Parts per Million)")
+       y = "Carbon Dioxide (Parts per Million)") 
 
+g2 = ggplot(data = world_co2[731:774,], aes(x = Date, y = Value)) +
+  geom_point() +
+  labs(title = "World Carbon Dioxide Concentration From 2019 to 2022",
+       x = "Year",
+       y = "Carbon Dioxide (Parts per Million)") +
+  theme(axis.text.x = element_text(angle = 90)) 
+
+gridExtra::grid.arrange(g1, g2, nrow = 1)
 
 ```
 
+One of the most indicative measurements to showcase Earth's gradually changing climate is the concentration of carbon dioxide (taken at Mauna Loa, Hawaii).  Since 1958, Mauna Loa was chosen as a long term monitoring site, due to its lack of vegetation and remote location far from other continents.  As shown in the graphs above, the carbon dioxide concentration in the atmosphere has increased from around 313 parts per million in 1958 to over 420 parts per million in 2022.  This increase can be attributed to the release of fossil fuels in the atmosphere, which has accelerated since the industrial revolution, and is one of contributors to global warming.  In addition to the general pattern of increase exhibited by the graph on the left, the graph on the right displays the seasonality of carbon dioxide data.  This curve (known as the Keeling Curve) shows a cyclic variation of about 6 ppm each calendar year, with a peak in May and a minimum in September.  The variation is due to the uptake of carbon dioxide by the world's land vegetation; from the maximum in May, the concentration decreases as new plant growth during Northern hemisphere's spring and summer absorbs carbon dioxide through Photosynthesis.  
+
+This set of graphs also allows us to preface the analysis of this project - since climate data is inherently "noisy" and oftentimes seasonal, it is important to keep that in mind as you read through the document, as some patterns or conclusions may not be as definitive as we would have liked.  Nonetheless, we do hope that this project serves it educational purpose on the factors that may affect climate change. 
+
+
 ## Temperature Change
-```{r}
+```{r fig.width=6, fig.height= 5}
 temp_change = read.csv('data/Annual_Surface_Temperature_Change.csv', stringsAsFactors = TRUE)
 temp_change = temp_change[, -c(3, 4, 5, 6 ,7 ,8 ,9, 10)]
 temp_change = temp_change[, -c(1)]
@@ -102,9 +115,12 @@ df_temp_subset_average = df_temp_subset %>%
   group_by(Country) %>%
   summarise(average = mean(Value))
 
-ggplot(data=subset(df_temp, Country %in% c('United States', 'India', 'Japan', 'Germany', 'Indonesia', 'France', 'Brazil', 'United Kingdom', 'Italy', 'Mexico', 'China, P.R.: Mainland')), aes(x=Year, y=Value, group = Country, colour = Country)) +
+ggplot(data=df_temp_subset, aes(x=as.numeric(Year), y=Value, group = Country, colour = Country)) +
   geom_line() +
-  geom_point()
+  geom_point() +
+  xlab('Year') +
+  ylab("Temperature Change in Degrees Celsius ") +
+  ggtitle("Temperature Change of 11 Countries (Top GDPs) from 1961-2021")
 
 ggplot(data = df_temp_subset, aes(x = reorder(Country, Value, median), y = Value)) + 
   geom_boxplot() +
@@ -112,24 +128,43 @@ ggplot(data = df_temp_subset, aes(x = reorder(Country, Value, median), y = Value
 
 ```
 
+
+
 ## Sea Level Change
 
 ```{r}
 sea_level_change = read.csv("data/Change_in_Mean_Sea_Levels.csv", stringsAsFactors = TRUE)
 sea_level_change = sea_level_change[, -c(1:10)]
 
-ggplot(data = sea_level_change, aes(x = Date, y = Value, group = Measure, color = Measure)) + 
-  geom_line()
-
 ggplot(data = sea_level_change, aes(x = reorder(Measure, Value, median), y = Value)) +
   geom_boxplot() +
-  theme(axis.text.x = element_text(angle = 90))
+  theme(axis.text.x = element_text(angle = 90)) +
+  xlab("Measurements of Oceans and Seas") +
+  ylab("Mean Sea Level Change (millimeters")
+
+interactive_sea = sea_level_change
+interactive_sea$Date = substr(interactive_sea$Date, 1, 4)
+
+interactive_sea_tidy = interactive_sea %>%
+  group_by(Date, Measure) %>%
+  summarise(Sea_lvl_change = mean(Value))
+
+ggplot(data = interactive_sea_tidy, aes(x = as.numeric(Date), y = Sea_lvl_change, group = Measure, colour = Measure)) + 
+  geom_line() +
+  xlab("Measurements of Oceans and Seas") +
+  ylab("Mean Sea Level Change (millimeters")
+
+ggplot(data = interactive_sea_tidy, aes(x = reorder(Measure, Sea_lvl_change, median), y = Sea_lvl_change)) +
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 90)) +
+  xlab("Measurements of Oceans and Seas") +
+  ylab("Mean Sea Level Change (millimeters")
 
 ```
 
 ## Temperature Change and GDP
 
-```{r}
+```{r fig.width = 5, fig.height = 3}
 
 df_temp_subset_1970 = df_temp_subset[df_temp_subset$Year >= 1970,]
 df_temp_subset_1970$Country = as.character(df_temp_subset_1970$Country)
@@ -140,27 +175,38 @@ df_temp_subset_1970$Country = as.factor(df_temp_subset_1970$Country)
 
 temperature_gdp = merge(df_temp_subset_1970, df_gdp_chen, by.x = c("Country", 'Year'), by.y = c('Country', "Time"))
 
-ggplot(data = temperature_gdp, aes(x = Value.x, y = Value.y)) +
+ggplot(data = temperature_gdp, aes(x = Value.y, y = Value.x)) +
   geom_point() +
-  facet_wrap(~Country, scale="free_y")
+    geom_smooth(method = "lm") +
+  facet_wrap(~Country, scale="free_x") +
+  xlab("GDP") +
+  ylab("Temperature Change in Degrees Celsius")
 
-ggplot(data = temperature_gdp, aes(x = Value.x, y = Value.y,)) +
-  geom_point() 
+ggplot(data = temperature_gdp, aes(x = Value.y, y = Value.x,)) +
+  geom_point()  +
+  geom_smooth(method = "lm") +
+  xlab("GDP") +
+  ylab("Temperature Change in Degrees Celsius")
 
 
 ```
 
 ## Temperature Change and Population
-```{r}
+```{r fig.width = 5, fig.height = 3}
 df_population = subset(df_gdp, Country %in% country_gdp & Subject %in% "Total population; persons; thousands")
 temperature_population = merge(df_temp_subset_1970, df_population, by.x = c("Country", 'Year'), by.y = c('Country', "Time"))
 
-ggplot(data = temperature_population, aes(x = Value.x, y = Value.y)) +
+ggplot(data = temperature_population, aes(x = Value.y, y = Value.x)) +
   geom_point() +
-  facet_wrap(~Country, scale="free_y")
+  geom_smooth(method = "lm") +
+  facet_wrap(~Country, scale="free_x") +
+  xlab("Population") +
+  ylab("Temperature Change in Degrees Celsius")
 
-ggplot(data = temperature_population, aes(x = Value.x, y = Value.y)) +
-  geom_point() 
+ggplot(data = temperature_population, aes(x = Value.y, y = Value.x)) +
+  geom_point() +
+  xlab("Population") +
+  ylab("Temperature Change in Degrees Celsius")
 
 ```
 
@@ -181,7 +227,7 @@ ggparcoord(log(temp_gdp_pollution[, c(3,4, 5)]), alpha = 0.5, scale = "uniminmax
 
 ## Sea Level Change and Sea Ice
 
-```{r}
+```{r fig.width = 5}
 
 df_icevolume <- read.csv("Kelly_draft/PIOMAS_monthly.csv")
 df_icevolume["average"] = rowMeans(df_icevolume[, -c(1)])
@@ -203,27 +249,33 @@ sl_group_new_tidy = sl_group_new %>%
 
 colnames(sl_group_new_tidy) = c("year", 'Average_SL_Change')
 
-ggplot(data = sl_group_new_tidy, aes(x = year, y = Average_SL_Change)) +
+i1 = ggplot(data = sl_group_new_tidy, aes(x = as.numeric(year), y = Average_SL_Change)) +
   geom_point() +
-  theme(axis.text.x = element_text(angle = 90))
+  xlab("Year") +
+  ylab("Sea Level Change (millimeters)") +
+  ggtitle("Changes in Mean Sea Level from 1992 to 2022") 
 
 df_icevolume_new = df_icevolume
 df_icevolume_new = df_icevolume_new[df_icevolume_new$year >= 1992, ]
 
 ice_sea = merge(sl_group_new_tidy, df_icevolume_new, by = "year")
 
-ggplot(data = ice_sea, aes(Average_SL_Change, average)) + 
+ggplot(data = ice_sea, aes(average, Average_SL_Change)) + 
   geom_point() + 
-  geom_line() + 
-  geom_smooth(method = "lm", se = FALSE)
+  geom_smooth(method = "lm", se = FALSE) +
+  xlab("Changes in Sea Ice") +
+  ylab("Mean Sea Level Change") +
+  ggtitle("Scatterplot of Mean Sea Level Change v.s Sea Ice Change (1992-2021)")
+  
 
 fig3_icevolume <- ggplot(df_icevolume, aes(x=year,y=average)) + 
-  geom_line() + 
   geom_point() + 
   ggtitle("Change in Ice Volume") +
   xlab("Year") + ylab("Ice Volume")
 
 plot(fig3_icevolume)
+
+gridExtra::grid.arrange(i1, fig3_icevolume, nrow = 1)
 
 ```
 
@@ -247,8 +299,7 @@ ggplot(data = temp_ghg, aes(x = Value, y = as.numeric(value))) +
   facet_wrap(~Country,scale="free_y")
 
 ggplot(data = temp_ghg, aes(x = Value, y = as.numeric(value))) +
-  geom_point() +
-  geom_line() 
+  geom_point() 
 
 
 ```
