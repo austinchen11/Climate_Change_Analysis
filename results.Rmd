@@ -317,6 +317,8 @@ fig_ghg2 <- ggplot(df_ghg2, aes(x=Year,y=as.numeric(value), color=Country,group=
 
 plot(fig_ghg2)
 ```
+Since the 20th century, the greenhouse gases produced by human activity have been the major cause of climate change. The excess of greenhouse gases in the atmosphere would disrupt the earth's carbon cycle and also hasten global warming. These 11 countries account for around 60% of global greenhouse gas emissions, whereas the 100 lowest emitters only contributed about 3%. From this plot, we can see that the greenhouse gas emissions from China and United States are much higher than other countries, and China had a huge jump throughout these years while other countries remain steadily. We know that the majority of the world's greenhouse gas emissions comes from transportation, electricity generation, agriculture and other forms of energy use. United States is the word's largest economy throughout years. This results in the greenhouse gas emissions of United States is higher than other developed and developing countries from 1990-2019 but within a relatively steady range. On the other hand, the greenhouse gas emissions from China keeps increasing and reaches the highest level in 2019. This increase can be attributed to the economy development happened in China. China's economy has grown to one of the largest and most powerful in the world over the past few decades. The extraordinary urbanization boom in China has accelerated greenhouse gas emissions. Cement and steel production, which have fueled China's infrastructure development, both emit significant amounts of CO2 during the refining process.
+
 
 ```{r}
 ggplot(df_ghg2,aes(x=Year,y=as.numeric(value),fill=Country))+geom_bar(stat='identity')
@@ -326,21 +328,9 @@ fig2_ghg_country <- ggplot(df_ghg2, aes(x=Year,y=as.numeric(value), group=Countr
   geom_line() + 
   geom_point() + theme(axis.text.x = element_text(angle = 90)) + facet_wrap(~Country, scale="free_y",nrow=5) +
   ggtitle('Changes in Green House Gas by Countries')
-
-plot(fig2_ghg_country)
 ```
-# Agriculture and forestland
-```{r}
-df_landuse <- read.csv("Kelly_draft/landuse.csv")
-df_landuse_Agriculture <- subset(df_landuse, Area %in% c("China","United States of America","India","France","Japan","Germany","Italy","United Kingdom","Mexico","Indonesia","Brazil") & Item %in% "Agriculture")
+From the graph above, we can see that most developed countries are decreasing their greehhouse gas emmision, while developing countries tends to have a continous increasing. There are two unusual behavors in Brazil and Japan. In 2010, the greenhouse gas emmision of Brazil has a sharp drop. The greenhouse gas emmision of Japan has dropped from 2007 and reached the lowest in 2009. After 2009, it has a rapid increasing until 2013. This can be attributed to the economy crisis happened in 2008 and 2009. During that period of time, the Japanese economy shrunk and the Tokyo stock market crashed. The GDP of Japan only grew around 1%. Due to the economy crsis, the greenhouse gas emmision of Japan dropped hard.
 
-fig4_Agriculture_country <- ggplot(df_landuse_Agriculture, aes(x=Year,y=as.numeric(Value),group=Area)) + 
-  geom_line() + 
-  geom_point() + facet_wrap(~Area, scale="free_y") + theme(axis.text.x = element_text(angle = 90)) + 
-  ggtitle('Changes in Agricultural Area by Countries')
-
-plot(fig4_Agriculture_country)
-```
 ```{r}
 df_forest <- read.csv("Kelly_draft/forest.csv")
 df_forest1 <- subset(df_forest, Area %in% c("China","United States of America","India","France","Japan","Germany","Italy","United Kingdom","Mexico","Indonesia","Brazil") & Item %in% "Forestland" & Element %in% "Area" & Source %in% "FAO TIER 1")
@@ -352,3 +342,17 @@ fig1_forest <- ggplot(df_forest1, aes(x=Year,y=as.numeric(Value),group=Area)) +
 
 plot(fig1_forest)
 ```
+
+# Agriculture
+```{r}
+df_landuse <- read.csv("Kelly_draft/landuse.csv")
+df_landuse_Agriculture <- subset(df_landuse, Area %in% c("China","United States of America","India","France","Japan","Germany","Italy","United Kingdom","Mexico","Indonesia","Brazil") & Item %in% "Agriculture")
+
+fig4_Agriculture_country <- ggplot(df_landuse_Agriculture, aes(x=Year,y=as.numeric(Value),group=Area)) + 
+  geom_line() + 
+  geom_point() + facet_wrap(~Area, scale="free_y") + theme(axis.text.x = element_text(angle = 90)) + 
+  ggtitle('Changes in Agricultural Area by Countries')
+
+plot(fig4_Agriculture_country)
+```
+From our analysis to greenhouse gases, in 2010, the greenhouse gas emmision of Brazil has a sharp drop. This may attribute to the changes in forest land and agricultura area in Brazil. Agriculture accounts for the largest share of Brazil’s greenhouse-gas output.
