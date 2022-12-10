@@ -59,6 +59,7 @@ ggplot( air_combined, aes(x = year, y = value, color = country, group = country)
        y = "PM 2.5 concentration (μg/m3)")
 
 ```
+
 There is a jump in India's PM2.5 concentration before and after 2017, and the data is missing before 2016. It is reasonable that the data are inconsistent since the dataset is combined from two datasets. The data from other countries are consistent.
 From the IQAir website, the PM2.5 concentration from 0-5 μg/m3 meets WHO guidelines. We can see that China is the most polluted country before 2017, but the air pollution index continues decreasing and in 2021, China's PM2.5 index is 32.6 μg/m3. India and Indonesia are the top 2 most polluted countries in 2021, with PM2.5 concentration 58.1 and 34.3 μg/m3. Other countries have relatively low air pollution.
 
@@ -133,8 +134,11 @@ ggplot(data = df_temp_subset, aes(x = reorder(Country, Value, median), y = Value
 ## Sea Level Change
 
 ```{r}
-sea_level_change = read.csv("data/Change_in_Mean_Sea_Levels.csv", stringsAsFactors = TRUE)
-sea_level_change = sea_level_change[, -c(1:10)]
+sea_level_change_ok = read.csv("data/Change_in_Mean_Sea_Levels.csv", stringsAsFactors = TRUE)
+sea_level_change = sea_level_change_ok[, -c(1:10)]
+sea_level_change$Date = substring(sea_level_change$Date, 2)
+sea_level_change$Date = gsub("/", "-", sea_level_change$Date)
+sea_level_change$Date = as.Date(sea_level_change$Date, format = "%m-%d-%Y")
 
 ggplot(data = sea_level_change, aes(x = reorder(Measure, Value, median), y = Value)) +
   geom_boxplot() +
@@ -149,7 +153,7 @@ interactive_sea_tidy = interactive_sea %>%
   group_by(Date, Measure) %>%
   summarise(Sea_lvl_change = mean(Value))
 
-ggplot(data = interactive_sea_tidy, aes(x = as.numeric(Date), y = Sea_lvl_change, group = Measure, colour = Measure)) + 
+ggplot(data = interactive_sea_tidy, aes(x = Date, y = Sea_lvl_change, group = Measure, colour = Measure)) + 
   geom_line() +
   xlab("Measurements of Oceans and Seas") +
   ylab("Mean Sea Level Change (millimeters")
@@ -217,7 +221,7 @@ temp_gdp_pollution = merge(temperature_gdp, df_population, by.x = c("Country", '
 temp_gdp_pollution = temp_gdp_pollution[, c(1, 2, 3, 16, 31)]
 colnames(temp_gdp_pollution) = c("Country", "Year", "Temperature Change", "GDP", "Population")
 
-ggparcoord(temp_gdp_pollution, columns = 3:5, alpha = 0.5) 
+ggparcoord(temp_gdp_pollution, columns = 3:5, alpha = 0.5)
 
 ggparcoord(log(temp_gdp_pollution[, c(3,4, 5)]), alpha = 0.5, scale = "uniminmax")
 
@@ -232,9 +236,7 @@ ggparcoord(log(temp_gdp_pollution[, c(3,4, 5)]), alpha = 0.5, scale = "uniminmax
 df_icevolume <- read.csv("Kelly_draft/PIOMAS_monthly.csv")
 df_icevolume["average"] = rowMeans(df_icevolume[, -c(1)])
 
-sea_level_change$Date = substring(sea_level_change$Date, 2)
-sea_level_change$Date = gsub("/", "-", sea_level_change$Date)
-sea_level_change$Date = as.Date(sea_level_change$Date, format = "%m-%d-%Y")
+
 
 sl_group = sea_level_change %>%
   group_by(Date) %>%
