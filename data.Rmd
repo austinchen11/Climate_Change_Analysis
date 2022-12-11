@@ -34,6 +34,26 @@ https://www.iqair.com/us/world-most-polluted-countries
 The first dataset showcases PM2.5, PM10, and NO2 concentration and temporal coverage from 2010 to 2018 in different countries and cities. The data is collected by WHO, and as described on the website, "the primary sources of data were official reports of countries sent to WHO upon request." It can be downloaded as an excel file and contains 32191 entries and 15 columns. This dataset contains null values and other irrelevant information, thus it requires cleaning and preprocessing.
 Since we want to compare the air pollution before and after the rise of Covid-19, around 2019, we found another dataset which contains more up-to-date information. The second dataset from IQAir showcases PM2.5 concentration from 2018 to 2021 in 117 countries and contains 472 entries and 5 columns. The data cannot be downloaded, therefore, we choose to do web scraping and perform further cleaning and transformation. Finally, we combine these two datasets and do further analysis.
 
+### Greenhouse Gas Emission
+https://www.climatewatchdata.org/data-explorer/historical-emissions?historical-emissions-data-sources=cait&historical-emissions-gases=All%20Selected%2Call-ghg&historical-emissions-regions=All%20Selected&historical-emissions-sectors=%2Ctotal-including-lucf&page=1#data
+
+This data set showcases sector-level greenhouse gas (GHG) emissions for 194 countries and the European Union from 1990-2019. This data set is a little messy for time series plots, but it is easy to tidy by R.
+
+### Change in Sea Ice Volume
+http://psc.apl.uw.edu/research/projects/arctic-sea-ice-volume-anomaly/data/.
+
+This data set showcases the monthly changes in sea ice volume across the world from 1979 through present. This data set is in ASCII table format with 12 columns for each month and 44 rows for years 1979-present. In order to observe the trend of sea ice volume by years, we calculated the average changes in every year and plot them in time series. 
+
+### Change in Forests
+https://www.fao.org/faostat/en/#data/GF
+
+This data set showcases forests consists of CO2 emissions and removals corresponding to forest carbon stock changes. Statistics are available by country from 1990 to 2020. The dataset is a well-formated csv file with no missing values. Therefore, it does not require any data cleaning and pre-processing. 
+
+### Land Use in Agriculture
+https://www.fao.org/faostat/en/#data/RL
+
+The data are collected via the FAO Questionnaire on Land Use, Irrigation and Agricultural Practices, based on FAO Land Use classification. Statistics are available by country from 1961 to 2020. It shows the global land use in 46 categories, such as primary forest, agricultural practices and so on. In this project, we will discuss the changes in agriculture, so we only select the land use in the agriculture category.
+
 
 ## Cleaning / transformation
 
@@ -108,6 +128,41 @@ sl_group_new_tidy = sl_group_new %>%
 colnames(sl_group_new_tidy) = c("year", 'Average_SL_Change')
 ```
 
+### Greenhouse Gas Emission
+
+The greenhouse gas emission data set included quite a bit of transformation. First, we used mutate_all to convert all columns to characters. The column names X1990-X2019 represent values of the year variable, and the values in these columns represent the values of the greenhouse gas emissions. In order to plot the data set in time series, we used the pivot_longer to tidy the data. 
+
+```{r}
+df_ghg <- read.csv("Kelly_draft/ghg.csv")
+df_ghg1 <- subset(df_ghg, Country %in% c("China","United States","India","France","Japan","Germany","Italy","United Kingdom","Mexico","Indonesia","Brazil"))
+
+df_ghg2 <- df_ghg1 %>% mutate_all(as.character) %>% pivot_longer(cols = -c("Country","Data.source","Sector","Gas","Unit"), names_to = "Year", values_to = "value", names_prefix = "X")
+```
+
+### Change in Forests
+
+The forest data set did not require much transformation. Since we only need the changes in forests area, we just selected the data in forestland from this data set. 
+
+```{r}
+df_forest <- read.csv("Kelly_draft/forest.csv")
+df_forest1 <- subset(df_forest, Area %in% c("China","United States of America","India","France","Japan","Germany","Italy","United Kingdom","Mexico","Indonesia","Brazil") & Item %in% "Forestland" & Element %in% "Area" & Source %in% "FAO TIER 1")
+```
+### Change in Agricultural Area
+
+The land use data set did not require much transformation. Since we only need the changes in agricultural area, we just selected the data in agriculture from this data set. 
+
+```{r}
+df_landuse <- read.csv("Kelly_draft/landuse.csv")
+df_landuse_Agriculture <- subset(df_landuse, Area %in% c("China","United States of America","India","France","Japan","Germany","Italy","United Kingdom","Mexico","Indonesia","Brazil") & Item %in% "Agriculture")
+```
+### Change in Sea Ice 
+
+The Sea Ice Volume data set shows the monthly changes from 1979 through present. To show the trend in years, we need to calculate the average for each year. Therefore, we created a new column named "average" and calculated the row mean of each row.
+
+```{r}
+df_icevolume <- read.csv("Kelly_draft/PIOMAS_monthly.csv")
+df_icevolume["average"] = rowMeans(df_icevolume[, -c(1)])
+```
 ## Missing value analysis
 
 Two of our data sets included some missing values; we will denote their analysis below.
