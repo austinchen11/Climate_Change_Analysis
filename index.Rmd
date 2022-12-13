@@ -7,3 +7,45 @@ site: bookdown::bookdown_site
 
 # Introduction
 
+Since the dawn of the industrial revolution, the topic of climate change has become increasingly more prevalent, as human induced factors (spurred by the technological advancements of the 21st century), has affected Earth in a negative way.  While we absolutely should rejoice and marvel at how far humanity has come, we should also take a step back, and look at how our actions can impact the environment.  This increasing relevance, as well as the implications that climate change can have on the survival of the human race, are the two primary reasons why our group decided to explore this topic.  Climate change as a topic, as you might expect, is extremely broad (commonly defined as the long term change in Earth's climate and weather patterns); therefore, our group decided to narrow the field and focus on a few specific target questions that are of interest to us.  The organization of our project is quite simple, we will first discuss the individual quantities of concern (like GDP, population, temperature change ...etc), and in the latter half of the analysis, we will attempt to combine some of these factors and generalize the relationship inferred from the graphs resulting from these merges.  Our topics are as follows:
+
+* There are countless countries in the world, therefore, it is almost impossible to produce a coherent analysis of all of these countries in such of short amount of time.  Thus, to make our analysis tangible, a subset of them - top 11 GDP's of the world - will be selected (these countries will be referred to as "project countries" from here on out).
+
+1. Examine the GDP of the project countries from 1970 to 2021  (this list of 11 countries will be carried throughout the project).
+
+2. Population of the project countries from 1970 to 2021
+
+3. Air Pollution from 2021 to 2021
+
+4. Carbon dioxide concentrations from 1958 to 2022
+
+5. The temperature change of the project countries from 1961 to 2021
+
+6. The mean sea level change of 24 regions from 1992 to 2021
+
+7. Changes in greenhouse gas concentrations of the project countries from 1990 to 2019
+
+8. Changes in the forest area of the project countries from 1990 to 2019
+
+9. Changes in the agricultural area of the project countries from 1990 to 2019
+
+* The above 9 questions encompasses all of the individual analysis our group conducted.  The topics below will be focuses on generalizing relationships between two or more of the above features
+
+10. What is the relationship between the GDP and temperature change of a country?
+
+11. What is the relationship between the population and the temperature change of a country?
+
+12. What is the relationship between mean sea level change and the sea ice concentration of the world?
+
+As you read through our project book, we hope that you will gain some valuable insights into most of these factors, factors that undoubtedly affect Earth's climate, and by extension, the survival of our race! (a semi-hyperbole is employed here)
+
+
+
+
+
+
+
+
+
+
+

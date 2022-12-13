@@ -69,26 +69,34 @@ Our analysis of this graph focus on the impact of Covid-19 on air pollution. Sin
 ## Carbon Dioxide
 
 ```{r fig.width = 7, fig.height= 4}
+
+## read in the data and peform some basic transformation and cleanings
 world_co2 = read.csv('data/Atmospheric_CO%E2%82%82_Concentrations.csv', stringsAsFactors = TRUE)
 world_co2 = world_co2[, -c(1, 3, 4, 5, 7, 8, 9, 10)]
 world_co2 = world_co2[world_co2$Unit == "Parts Per Million", ]
-
 world_co2$Date = gsub("M","-", world_co2$Date)
 
+# plot the co2 concentration of the entire period
 g1 = ggplot(data = world_co2, aes(x = Date, y = Value)) +
   geom_point() +
   labs(title = "World Carbon Dioxide Concentration From 1958 to 2022",
        x = "Year",
        y = "Carbon Dioxide (Parts per Million)") 
 
-g2 = ggplot(data = world_co2[731:774,], aes(x = Date, y = Value)) +
+new_c02 = world_co2[731:774,]
+new_c02$Date = paste(new_c02$Date, "-01", sep = "")
+
+
+# plot the co2 concentration of the subset of years, in order to view the monthly seasonality
+g2 = ggplot(data = new_c02, aes(x = as.Date(Date), y = Value)) +
   geom_point() +
   labs(title = "World Carbon Dioxide Concentration From 2019 to 2022",
        x = "Year",
-       y = "Carbon Dioxide (Parts per Million)") +
-  theme(axis.text.x = element_text(angle = 90)) 
+       y = "Carbon Dioxide (Parts per Million)") 
 
+## arrange in a grid
 gridExtra::grid.arrange(g1, g2, nrow = 1)
+
 
 ```
 
@@ -99,23 +107,31 @@ This set of graphs also allows us to preface the analysis of this project - sinc
 
 ## Temperature Change
 ```{r fig.width=6, fig.height= 5}
+
+# read in the data and perform some basic transformations and cleaning
 temp_change = read.csv('data/Annual_Surface_Temperature_Change.csv', stringsAsFactors = TRUE)
 temp_change = temp_change[, -c(3, 4, 5, 6 ,7 ,8 ,9, 10)]
 temp_change = temp_change[, -c(1)]
 temp_change_removed = na.omit(temp_change)
 
+# import reshape2
 library(reshape2)
 
+# make the temperature change data set into a form that can be graphed as a time series
 df_temp <- melt(subset(temp_change_removed, Country %in% c('United States', 'India', 'Japan', 'Germany', 'Indonesia', 'France', 'Brazil', 'United Kingdom', 'Italy', 'Mexico', 'China, P.R.: Mainland')), id.vars=c("Country"),value.name="Value", variable.name="Year")
 
+# define the subset of the top 11 GDP countries in the world
 df_temp_subset = subset(df_temp, Country %in% c('United States', 'India', 'Japan', 'Germany', 'Indonesia', 'France', 'Brazil', 'United Kingdom', 'Italy', 'Mexico', 'China, P.R.: Mainland'))
 
+# clean the formatting of the years column
 df_temp_subset$Year = substring(df_temp_subset$Year, 2)
 
+# use groupby to create the average of each country (may or may not be used later)
 df_temp_subset_average = df_temp_subset %>%
   group_by(Country) %>%
   summarise(average = mean(Value))
 
+# plot the subset
 ggplot(data=df_temp_subset, aes(x=as.numeric(Year), y=Value, group = Country, colour = Country)) +
   geom_line() +
   geom_point() +
@@ -123,9 +139,14 @@ ggplot(data=df_temp_subset, aes(x=as.numeric(Year), y=Value, group = Country, co
   ylab("Temperature Change in Degrees Celsius ") +
   ggtitle("Temperature Change of 11 Countries (Top GDPs) from 1961-2021")
 
+# plot is using a boxplot
 ggplot(data = df_temp_subset, aes(x = reorder(Country, Value, median), y = Value)) + 
   geom_boxplot() +
   theme(axis.text.x = element_text(angle = 90))
+
+library(ggridges)
+ggplot(data = df_temp_subset, aes(y= Country , x = Value)) + 
+  geom_density_ridges(alpha=0.5)
 
 ```
 
@@ -134,41 +155,46 @@ ggplot(data = df_temp_subset, aes(x = reorder(Country, Value, median), y = Value
 ## Sea Level Change
 
 ```{r}
+# read in the data and perform some basic transformations and cleaning
 sea_level_change_ok = read.csv("data/Change_in_Mean_Sea_Levels.csv", stringsAsFactors = TRUE)
 sea_level_change = sea_level_change_ok[, -c(1:10)]
 sea_level_change$Date = substring(sea_level_change$Date, 2)
 sea_level_change$Date = gsub("/", "-", sea_level_change$Date)
 sea_level_change$Date = as.Date(sea_level_change$Date, format = "%m-%d-%Y")
 
+# plot the data using a boxplot
 ggplot(data = sea_level_change, aes(x = reorder(Measure, Value, median), y = Value)) +
   geom_boxplot() +
   theme(axis.text.x = element_text(angle = 90)) +
   xlab("Measurements of Oceans and Seas") +
   ylab("Mean Sea Level Change (millimeters")
 
+# define a new dataframe to transform
 interactive_sea = sea_level_change
 interactive_sea$Date = substr(interactive_sea$Date, 1, 4)
 
+# transform into something graphable
 interactive_sea_tidy = interactive_sea %>%
   group_by(Date, Measure) %>%
   summarise(Sea_lvl_change = mean(Value))
 
-ggplot(data = interactive_sea_tidy, aes(x = Date, y = Sea_lvl_change, group = Measure, colour = Measure)) + 
+# plot that transformed data
+ggplot(data = interactive_sea_tidy, aes(x = as.numeric(Date), y = Sea_lvl_change, group = Measure, colour = Measure)) + 
   geom_line() +
   xlab("Measurements of Oceans and Seas") +
   ylab("Mean Sea Level Change (millimeters")
 
-ggplot(data = interactive_sea_tidy, aes(x = reorder(Measure, Sea_lvl_change, median), y = Sea_lvl_change)) +
-  geom_boxplot() +
-  theme(axis.text.x = element_text(angle = 90)) +
-  xlab("Measurements of Oceans and Seas") +
-  ylab("Mean Sea Level Change (millimeters")
+
+ggplot(data = interactive_sea_tidy, aes(y= Measure , x = Sea_lvl_change)) + 
+  geom_density_ridges(alpha=0.5)
 
 ```
 
 ## Temperature Change and GDP
 
 ```{r fig.width = 5, fig.height = 3}
+
+## make copies and redefine data sets in order to merge temperature change and gdp together
 
 df_temp_subset_1970 = df_temp_subset[df_temp_subset$Year >= 1970,]
 df_temp_subset_1970$Country = as.character(df_temp_subset_1970$Country)
@@ -177,8 +203,10 @@ df_gdp_chen = subset(df_gdp, Country %in% country_gdp & Subject %in% "Gross Dome
 
 df_temp_subset_1970$Country = as.factor(df_temp_subset_1970$Country)
 
+# merge the data sets
 temperature_gdp = merge(df_temp_subset_1970, df_gdp_chen, by.x = c("Country", 'Year'), by.y = c('Country', "Time"))
 
+# plot it faceted on the countries
 ggplot(data = temperature_gdp, aes(x = Value.y, y = Value.x)) +
   geom_point() +
     geom_smooth(method = "lm") +
@@ -186,6 +214,7 @@ ggplot(data = temperature_gdp, aes(x = Value.y, y = Value.x)) +
   xlab("GDP") +
   ylab("Temperature Change in Degrees Celsius")
 
+# plot the general scatterplot, without faceting
 ggplot(data = temperature_gdp, aes(x = Value.y, y = Value.x,)) +
   geom_point()  +
   geom_smooth(method = "lm") +
@@ -195,11 +224,19 @@ ggplot(data = temperature_gdp, aes(x = Value.y, y = Value.x,)) +
 
 ```
 
+
+The graphs above were generated by merging the temperature change data set with the GDP data set, each of the data points represents the pair of values (GDP, temperature change) of each country associated with a given year.  Before even conducting the analysis, logic informs us that there should be a positive relationship between the GDP and mean temperature change of a country, since a higher GDP typically relates to more production power, more technological advancements, more fossil fuel burning, and a higher output of global warming inducing gases.  However, on the other hand, one could make an argument that countries with a higher GDP have better resources for combating and mitigating temperature regulation.  
+
+Referring back to the individual GDP analysis above, China and the United State's GDP are magnitudes higher than the other countries', therefore, to make the graph readable, a scale of "free_x" was used.  The resulting faceted graph shows quite a clear relationship between GDP and temperature:  as the GDP of a country increases, the mean temperature change also increases.  This aligns with the initial logic outlined above.  Furthermore, while some countries' (Brazil and Indonesia) may not exhibit a high slope like the others (France, Italy, US), there is still a relatively strong positive relationship.  Therefore, with a degree of confidence, our group concludes that there is a positive correlation between the GDP and temperature change of a country (exhibited with the data we collected, cleaned, and transformed).  However, like I prefaced in the beginning of this project, climate data is inherently noisy, and incredibly dynamic; so it is entirely possible we may have missed some confounder variable that is contributing to this correlation.  
+
+
 ## Temperature Change and Population
 ```{r fig.width = 5, fig.height = 3}
+# merge the data sets of temperature change and population
 df_population = subset(df_gdp, Country %in% country_gdp & Subject %in% "Total population; persons; thousands")
 temperature_population = merge(df_temp_subset_1970, df_population, by.x = c("Country", 'Year'), by.y = c('Country', "Time"))
 
+# plot it faceted on the different countries
 ggplot(data = temperature_population, aes(x = Value.y, y = Value.x)) +
   geom_point() +
   geom_smooth(method = "lm") +
@@ -207,12 +244,17 @@ ggplot(data = temperature_population, aes(x = Value.y, y = Value.x)) +
   xlab("Population") +
   ylab("Temperature Change in Degrees Celsius")
 
+# plot it without faceting on the countries
 ggplot(data = temperature_population, aes(x = Value.y, y = Value.x)) +
   geom_point() +
   xlab("Population") +
   ylab("Temperature Change in Degrees Celsius")
 
 ```
+Similar with the temperature change v.s GDP plot above, this graph was also generated by merging the respective data sets.  Each of the data points from the faceted graph above represents the pair of values (population, temperature change) of each country associated with a given year.  Before even conducting the analysis, we hypothesized that there would be a positive relationship between the population and the temperature change of a country.  This initial guess aligns perfectly well with logic, now let us see if our data supports this.
+
+Referring back to the individual population analysis above, it can be observed that China and India have populations that are magnitudes higher than all of the other countries, so again, in order to make our graphs readable, a scale of "free_x" is used.  The resulting faceted graph shows quite a clear positive relationship for all 11 of the countries.  One can even make an argument that the correlation is stronger in this graph than the previous one of GDP v.s temperature change.  Our gathered data and analysis supports the conclusion that there is a semi-strong positive correlation between the population and the temperature change of a country.  
+
 
 ## Temperature Change, Population, GDP
 ```{r}
@@ -226,17 +268,19 @@ ggparcoord(temp_gdp_pollution, columns = 3:5, alpha = 0.5)
 ggparcoord(log(temp_gdp_pollution[, c(3,4, 5)]), alpha = 0.5, scale = "uniminmax")
 
 
-
+ggplot(data = temp_gdp_pollution, aes (x = Population, y = GDP)) +
+  geom_point()
 ```
 
 ## Sea Level Change and Sea Ice
 
 ```{r fig.width = 5}
 
+# read in the sea ice data
 df_icevolume <- read.csv("Kelly_draft/PIOMAS_monthly.csv")
 df_icevolume["average"] = rowMeans(df_icevolume[, -c(1)])
 
-
+# perform a series of groupbys in order to get the data into a format that can be successfullt merged with the sea level change data defined earlier
 
 sl_group = sea_level_change %>%
   group_by(Date) %>%
@@ -251,6 +295,7 @@ sl_group_new_tidy = sl_group_new %>%
 
 colnames(sl_group_new_tidy) = c("year", 'Average_SL_Change')
 
+# plot the sea level change
 i1 = ggplot(data = sl_group_new_tidy, aes(x = as.numeric(year), y = Average_SL_Change)) +
   geom_point() +
   xlab("Year") +
@@ -262,6 +307,7 @@ df_icevolume_new = df_icevolume_new[df_icevolume_new$year >= 1992, ]
 
 ice_sea = merge(sl_group_new_tidy, df_icevolume_new, by = "year")
 
+# plot the merged data and fit it with a regression line
 ggplot(data = ice_sea, aes(average, Average_SL_Change)) + 
   geom_point() + 
   geom_smooth(method = "lm", se = FALSE) +
@@ -269,13 +315,12 @@ ggplot(data = ice_sea, aes(average, Average_SL_Change)) +
   ylab("Mean Sea Level Change") +
   ggtitle("Scatterplot of Mean Sea Level Change v.s Sea Ice Change (1992-2021)")
   
-
+# plot the sea ice change
 fig3_icevolume <- ggplot(df_icevolume, aes(x=year,y=average)) + 
   geom_point() + 
   ggtitle("Change in Ice Volume") +
   xlab("Year") + ylab("Ice Volume")
 
-plot(fig3_icevolume)
 
 gridExtra::grid.arrange(i1, fig3_icevolume, nrow = 1)
 
