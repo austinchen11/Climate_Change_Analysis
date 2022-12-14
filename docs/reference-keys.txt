@@ -44,3 +44,12 @@ sea-level-change-and-sea-ice
 temperature-change-and-greenhouse-gases
 interactive-component
 conclusion
+greenhouse-gas-emission-1
+change-in-sea-ice-volume-1
+change-in-forests-1
+land-use-in-agriculture
+greenhouse-gas-emission-2
+change-in-forests-2
+change-in-agricultural-area
+change-in-sea-ice
+agriculture
