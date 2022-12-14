@@ -144,9 +144,6 @@ ggplot(data = df_temp_subset, aes(x = reorder(Country, Value, median), y = Value
   geom_boxplot() +
   theme(axis.text.x = element_text(angle = 90))
 
-library(ggridges)
-ggplot(data = df_temp_subset, aes(y= Country , x = Value)) + 
-  geom_density_ridges(alpha=0.5)
 
 ```
 
@@ -185,8 +182,6 @@ ggplot(data = interactive_sea_tidy, aes(x = as.numeric(Date), y = Sea_lvl_change
   ylab("Mean Sea Level Change (millimeters")
 
 
-ggplot(data = interactive_sea_tidy, aes(y= Measure , x = Sea_lvl_change)) + 
-  geom_density_ridges(alpha=0.5)
 
 ```
 
@@ -256,22 +251,6 @@ Similar with the temperature change v.s GDP plot above, this graph was also gene
 Referring back to the individual population analysis above, it can be observed that China and India have populations that are magnitudes higher than all of the other countries, so again, in order to make our graphs readable, a scale of "free_x" is used.  The resulting faceted graph shows quite a clear positive relationship for all 11 of the countries.  One can even make an argument that the correlation is stronger in this graph than the previous one of GDP v.s temperature change.  Our gathered data and analysis supports the conclusion that there is a semi-strong positive correlation between the population and the temperature change of a country.  
 
 
-## Temperature Change, Population, GDP
-```{r}
-library(GGally)
-temp_gdp_pollution = merge(temperature_gdp, df_population, by.x = c("Country", 'Year'), by.y = c('Country', "Time"))
-temp_gdp_pollution = temp_gdp_pollution[, c(1, 2, 3, 16, 31)]
-colnames(temp_gdp_pollution) = c("Country", "Year", "Temperature Change", "GDP", "Population")
-
-ggparcoord(temp_gdp_pollution, columns = 3:5, alpha = 0.5)
-
-ggparcoord(log(temp_gdp_pollution[, c(3,4, 5)]), alpha = 0.5, scale = "uniminmax")
-
-
-ggplot(data = temp_gdp_pollution, aes (x = Population, y = GDP)) +
-  geom_point()
-```
-
 ## Sea Level Change and Sea Ice
 
 ```{r fig.width = 5}
@@ -326,30 +305,6 @@ gridExtra::grid.arrange(i1, fig3_icevolume, nrow = 1)
 
 ```
 
-## Temperature Change and Greenhouse Gases
-
-```{r}
-df_temp_subset_1990 = df_temp_subset
-df_temp_subset_1990 = df_temp_subset_1990[df_temp_subset_1990$Year >= 1990,]
-df_temp_subset_1990$Country = as.character(df_temp_subset_1990$Country)
-df_temp_subset_1990$Country[df_temp_subset_1990$Country == "China, P.R.: Mainland"] = "China"
-df_ghg <- read.csv("Kelly_draft/ghg.csv")
-ghg_chen = subset(df_ghg, Country %in% c("China","United States","India","France","Japan","Germany","Italy","United Kingdom","Mexico","Indonesia"))
-
-ghg_chen <- ghg_chen %>% mutate_all(as.character) %>% pivot_longer(cols = -c("Country","Data.source","Sector","Gas","Unit"), names_to = "Year", values_to = "value", names_prefix = "X")
-
-temp_ghg = merge(df_temp_subset_1990, ghg_chen, by.x = c("Country", "Year"),  by.y = c("Country", "Year"))
-temp_ghg$Year = as.factor(temp_ghg$Year)
-
-ggplot(data = temp_ghg, aes(x = Value, y = as.numeric(value))) +
-  geom_line() +
-  facet_wrap(~Country,scale="free_y")
-
-ggplot(data = temp_ghg, aes(x = Value, y = as.numeric(value))) +
-  geom_point() 
-
-
-```
 
 ```{r}
 df_ghg <- read.csv("Kelly_draft/ghg.csv")
@@ -376,7 +331,7 @@ fig2_ghg_country <- ggplot(df_ghg2, aes(x=Year,y=as.numeric(value), group=Countr
   geom_point() + theme(axis.text.x = element_text(angle = 90)) + facet_wrap(~Country, scale="free_y",nrow=5) +
   ggtitle('Changes in Green House Gas by Countries')
 ```
-From the graph above, we can see that most developed countries are decreasing their greehhouse gas emmision, while developing countries tends to have a continous increasing. There are two unusual behavors in Brazil and Japan. In 2010, the greenhouse gas emmision of Brazil has a sharp drop. The greenhouse gas emmision of Japan has dropped from 2007 and reached the lowest in 2009. After 2009, it has a rapid increasing until 2013. This can be attributed to the economy crisis happened in 2008 and 2009. During that period of time, the Japanese economy shrunk and the Tokyo stock market crashed. The GDP of Japan only grew around 1%. Due to the economy crsis, the greenhouse gas emmision of Japan dropped hard.
+From the graph above, we can see that most developed countries are decreasing their greehhouse gas emmision, while developing countries tends to have a continuous increasing. There are two unusual behavors in Brazil and Japan. In 2010, the greenhouse gas emmision of Brazil has a sharp drop. The greenhouse gas emission of Japan has dropped from 2007 and reached the lowest in 2009. After 2009, it has a rapid increasing until 2013. This can be attributed to the economy crisis happened in 2008 and 2009. During that period of time, the Japanese economy shrunk and the Tokyo stock market crashed. The GDP of Japan only grew around 1%. Due to the economy crsis, the greenhouse gas emmision of Japan dropped hard.
 
 ```{r}
 df_forest <- read.csv("Kelly_draft/forest.csv")
