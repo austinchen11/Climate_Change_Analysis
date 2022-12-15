@@ -38,6 +38,7 @@ fig_pop1 <- ggplot( subset(df_gdp, Country %in% country_gdp & Subject %in% "Tota
        y = "Population")
 plot(fig_pop1)
 ```
+
 China and India are the top 2 countries which have highest population and population growth rate from 1970 to 2021. China has about 1.42 billion people and India has 1.41 billion in 2021. US, Indonesia, and Brazil ranks the 3rd, 4th, and 5th by population. Other countries' population grows steadily.
 
 
