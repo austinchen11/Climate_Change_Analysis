@@ -82,7 +82,8 @@ ggplot(data = world_co2, aes(x = Date, y = Value)) +
   geom_point() +
   labs(title = "World Carbon Dioxide Concentration From 1958 to 2022",
        x = "Year",
-       y = "Carbon Dioxide (Parts per Million)") 
+       y = "Carbon Dioxide (Parts per Million)") +
+  theme(axis.text.x = element_blank())
   
 
 new_c02 = world_co2[731:774,]
@@ -95,10 +96,6 @@ ggplot(data = new_c02, aes(x = as.Date(Date), y = Value)) +
   labs(title = "World Carbon Dioxide Concentration From 2019 to 2022",
        x = "Year",
        y = "Carbon Dioxide (Parts per Million)") 
-
-
-
-
 ```
 
 One of the most indicative measurements to showcase Earth's gradually changing climate is the concentration of carbon dioxide (taken at Mauna Loa, Hawaii).  Since 1958, Mauna Loa was chosen as a long term monitoring site, due to its lack of vegetation and remote location far from other continents.  As shown in the graphs above, the carbon dioxide concentration in the atmosphere has increased from around 313 parts per million in 1958 to over 420 parts per million in 2022.  This increase can be attributed to the release of fossil fuels in the atmosphere, which has accelerated since the industrial revolution, and is one of contributors to global warming.  In addition to the general pattern of increase exhibited by the graph on the left, the graph on the right displays the seasonality of carbon dioxide data.  This curve (known as the Keeling Curve) shows a cyclic variation of about 6 ppm each calendar year, with a peak in May and a minimum in September.  The variation is due to the uptake of carbon dioxide by the world's land vegetation; from the maximum in May, the concentration decreases as new plant growth during Northern hemisphere's spring and summer absorbs carbon dioxide through Photosynthesis.  
