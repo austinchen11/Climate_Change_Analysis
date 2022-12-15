@@ -140,7 +140,7 @@ ggplot(data=df_temp_subset, aes(x=as.numeric(Year), y=Value, group = Country, co
 # plot is using a boxplot
 ggplot(data = df_temp_subset, aes(x = reorder(Country, Value, median), y = Value)) + 
   geom_boxplot() +
-  xlab('Year') +
+  xlab('Country') +
   ylab("Temperature Change in Degrees Celsius ") +
   ggtitle("Temperature Change of 11 Countries (Top GDPs) from 1961-2021") +
   theme(axis.text.x = element_text(angle = 90))
