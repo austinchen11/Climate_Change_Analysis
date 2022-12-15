@@ -27,6 +27,7 @@ fig_gdp2 <- ggplot( subset(df_gdp, Country %in% country_gdp & Subject %in% "Gros
        y = "GDP")
 plot(fig_gdp2)
 ```
+
 From the plot, we can see that China and US's GDP are much higher than other countries from 2010 to present. China's GDP is relatively low before 1990, but it grows rapidly and exceeds US's GDP from 2017 until present. India's GDP is also growing rapidly in recent years. Other countries' GDP are growing steadily.
 
 ## Population of the project countries from 1970 to 2021
