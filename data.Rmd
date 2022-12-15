@@ -165,19 +165,23 @@ The Sea Ice Volume data set shows the monthly changes from 1979 through present.
 df_icevolume <- read.csv("Kelly_draft/PIOMAS_monthly.csv")
 df_icevolume["average"] = rowMeans(df_icevolume[, -c(1)])
 ```
+
 ## Missing value analysis
 
 Two of our data sets included some missing values; we will denote their analysis below.
 
 ### Annual Surface Temperature Change
 
-```{r fig.width=6, fig.height=5}
+```{r}
 colSums(is.na(temp_change))
 
 library(mi)
 x = missing_data.frame(temp_change)
 image(x)
 ```
+
+Climate data is inherently messy, and with that messiness, comes the potential to include a significant amount of missing data.  As shown in the heat map above, there are two significant chunks of data that are black or missing.  The majority of missing data in this data set comes between the years of 1961 and 1991, with 1992 - 2021 representing a smaller percentage of missing values.  This observation aligns with logic, as it is more difficult to maintain and obtain data that is older, as opposed to newer data.  Additionally, we are typically less confident in the data values from centuries ago; although this data set does not include data that dates that far back, the conclusion stays constant.  In order to clean the data, we simply dropped the NA values from the data set, as the countries of interest to us were relatively whole, and the entire data is large enough to still generate meaningful analys
+
 
 ### Air Pollution
 ```{r}

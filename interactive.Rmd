@@ -1,3 +1,9 @@
 # Interactive component
 
 
+The link to our interactive graph:
+https://vizhub.com/BrownSugarBobaMilkTea/32d26753eb734ba982fad98ec14e0b13?edit=files&file=index.js 
+
+Our interactive component consists of the representation of greenhouse gas (GHG) concentration of the top 11 GDP countries of the world (the same countries we have been using throughout the project).  Our group felt that GHGs are a good representation of Earth's climate change, as they are an integral component of Earth's greenhouse effect, which is a major source of global warming. The interactive graph is a horizontal barchart, allowing the user to hover over each country's bar, and observe the exact greenhouse gas concentration for that year. This final product is quite simple, but we believe it is extremely useful.  Since the ability to see the exact number (rather than inferring an approximation from a graph) is a valuable feature to have for any type of analysis.
+
+Our group was quite ambitious in the interactive component we wanted to produce; however, ultimately it was too difficult to execute and we had to settle upon something that was manageable, but at the same time still providing extra value.  Initially, we wanted the graph to be in the form of a world map, where the user can hover over each country, ocean, or sea, and observe the GDP, population, carbon dioxide, pollution, GHG, and all other features discussed in our project.  The user would also have the ability to vary the years and observe all of the features throughout time.  Given more time and experience, this is definitely a product we want to explore in the future.

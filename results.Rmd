@@ -1,8 +1,8 @@
 # Results
 
-## GDP
+## Examine the GDP of the project countries from 1970 to 2021
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 library(openxlsx)
 library(ggplot2)
 library(mi)
@@ -14,7 +14,6 @@ library(tidyr)
 df_gdp <- read.csv("data/gdp.csv")
 top10_gdp_2021 <- df_gdp[df_gdp$Subject == "Gross Domestic Product (GDP); millions" & df_gdp$TIME == 2021 & df_gdp$Measure == "USD, current prices, current PPPs",]
 
-top10_gdp_2021[ order(top10_gdp_2021$Value,decreasing = TRUE), ][0:14,]
 ```
 
 From the GDP dataset, we found that the top ten countries which have the highest GDP in 2021 (in USD, current prices, current PPPs) are: USA, India, Japan, Germany, Indonesia, France, Brazil, UK, Italy, Mexico. The dataset doesn't contain China's GDP value in 2021 (but does contain from 1970-2020); this is not reflected as a null value in the dataset. Since China's GDP is also among the highest in the world before, we decided to include 11 countries: USA, India, Japan, Germany, Indonesia, France, Brazil, UK, Italy, Mexico, and China in our future analysis.
@@ -30,7 +29,7 @@ plot(fig_gdp2)
 ```
 From the plot, we can see that China and US's GDP are much higher than other countries from 2010 to present. China's GDP is relatively low before 1990, but it grows rapidly and exceeds US's GDP from 2017 until present. India's GDP is also growing rapidly in recent years. Other countries' GDP are growing steadily.
 
-## Population
+## Population of the project countries from 1970 to 2021
 ```{r}
 fig_pop1 <- ggplot( subset(df_gdp, Country %in% country_gdp & Subject %in% "Total population; persons; thousands"), aes(x = Time, y = Value, color = Country, group = Country)) +
   geom_line() + 
@@ -42,7 +41,7 @@ plot(fig_pop1)
 China and India are the top 2 countries which have highest population and population growth rate from 1970 to 2021. China has about 1.42 billion people and India has 1.41 billion in 2021. US, Indonesia, and Brazil ranks the 3rd, 4th, and 5th by population. Other countries' population grows steadily.
 
 
-## Air Pollution
+## Air Pollution from 2021 to 2021
 ```{r}
 air_combined <- read.csv("data/air_combined.csv")
 ggplot( air_combined, aes(x = factor(year), y = value, color = country, group = country)) +
@@ -66,9 +65,9 @@ From the IQAir website, the PM2.5 concentration from 0-5 μg/m3 meets WHO guidel
 Our analysis of this graph focus on the impact of Covid-19 on air pollution. Since during the pandemic, there are less outside activities. We compare the data before and after 2019 and see if there is a decreasing trend after Covid-19, as we expected. China and Indonesia's air pollution value decrease rapidly; Brazil, Italy, Japan, and Mexico have a slight decrease; France, Germany, UK are steady; India and US's air pollution value increase. The trend and the impact of Covid-19 are different for each country. Air pollution values are affected by multiple factors.
 
 
-## Carbon Dioxide
+## Carbon dioxide concentrations from 1958 to 2022
 
-```{r fig.width = 7, fig.height= 4}
+```{r}
 
 ## read in the data and peform some basic transformation and cleanings
 world_co2 = read.csv('data/Atmospheric_CO%E2%82%82_Concentrations.csv', stringsAsFactors = TRUE)
@@ -77,25 +76,25 @@ world_co2 = world_co2[world_co2$Unit == "Parts Per Million", ]
 world_co2$Date = gsub("M","-", world_co2$Date)
 
 # plot the co2 concentration of the entire period
-g1 = ggplot(data = world_co2, aes(x = Date, y = Value)) +
+ggplot(data = world_co2, aes(x = Date, y = Value)) +
   geom_point() +
   labs(title = "World Carbon Dioxide Concentration From 1958 to 2022",
        x = "Year",
        y = "Carbon Dioxide (Parts per Million)") 
+  
 
 new_c02 = world_co2[731:774,]
 new_c02$Date = paste(new_c02$Date, "-01", sep = "")
 
 
 # plot the co2 concentration of the subset of years, in order to view the monthly seasonality
-g2 = ggplot(data = new_c02, aes(x = as.Date(Date), y = Value)) +
+ggplot(data = new_c02, aes(x = as.Date(Date), y = Value)) +
   geom_point() +
   labs(title = "World Carbon Dioxide Concentration From 2019 to 2022",
        x = "Year",
        y = "Carbon Dioxide (Parts per Million)") 
 
-## arrange in a grid
-gridExtra::grid.arrange(g1, g2, nrow = 1)
+
 
 
 ```
@@ -105,8 +104,8 @@ One of the most indicative measurements to showcase Earth's gradually changing c
 This set of graphs also allows us to preface the analysis of this project - since climate data is inherently "noisy" and oftentimes seasonal, it is important to keep that in mind as you read through the document, as some patterns or conclusions may not be as definitive as we would have liked.  Nonetheless, we do hope that this project serves it educational purpose on the factors that may affect climate change. 
 
 
-## Temperature Change
-```{r fig.width=6, fig.height= 5}
+## The temperature change of the project countries from 1961 to 2021
+```{r}
 
 # read in the data and perform some basic transformations and cleaning
 temp_change = read.csv('data/Annual_Surface_Temperature_Change.csv', stringsAsFactors = TRUE)
@@ -142,14 +141,19 @@ ggplot(data=df_temp_subset, aes(x=as.numeric(Year), y=Value, group = Country, co
 # plot is using a boxplot
 ggplot(data = df_temp_subset, aes(x = reorder(Country, Value, median), y = Value)) + 
   geom_boxplot() +
+  xlab('Year') +
+  ylab("Temperature Change in Degrees Celsius ") +
+  ggtitle("Temperature Change of 11 Countries (Top GDPs) from 1961-2021") +
   theme(axis.text.x = element_text(angle = 90))
 
 
 ```
 
+In recent years, the world has seen a significant increase in temperature change. This trend is largely attributed to human activity and the resulting increase in greenhouse gas emissions. These emissions trap heat in the atmosphere, leading to a phenomenon known as global warming .From the first time series line/dot plot, we see that although there are some expected seasonal trends year to year, all 11 of the countries undoubtedly increased in temperature change in 2021, compared to 1960.  This is certainly an indication that change needs to happen.  Thus, it is important that actions are taken to reduce greenhouse gas emissions and mitigate the effects of global warming. This may include reducing our reliance on fossil fuels, increasing the use of renewable energy sources, and adopting more sustainable practices in our daily lives.
 
+The second plot is a boxplot representation of the same data, where each of the boxplots represents the time series data for that particular country.  One important feature to note about all of these boxplots is that the median are all above 0, which corroborates the trend observed in the previous time series plot.  In conclusion, the combination of both of these plots shows the undeniable truth that Earth's atmosphere is gradually heating up, and is yet another indication of climate change.
 
-## Sea Level Change
+## The mean sea level change of 24 regions from 1992 to 2021
 
 ```{r}
 # read in the data and perform some basic transformations and cleaning
@@ -158,13 +162,6 @@ sea_level_change = sea_level_change_ok[, -c(1:10)]
 sea_level_change$Date = substring(sea_level_change$Date, 2)
 sea_level_change$Date = gsub("/", "-", sea_level_change$Date)
 sea_level_change$Date = as.Date(sea_level_change$Date, format = "%m-%d-%Y")
-
-# plot the data using a boxplot
-ggplot(data = sea_level_change, aes(x = reorder(Measure, Value, median), y = Value)) +
-  geom_boxplot() +
-  theme(axis.text.x = element_text(angle = 90)) +
-  xlab("Measurements of Oceans and Seas") +
-  ylab("Mean Sea Level Change (millimeters")
 
 # define a new dataframe to transform
 interactive_sea = sea_level_change
@@ -179,15 +176,73 @@ interactive_sea_tidy = interactive_sea %>%
 ggplot(data = interactive_sea_tidy, aes(x = as.numeric(Date), y = Sea_lvl_change, group = Measure, colour = Measure)) + 
   geom_line() +
   xlab("Measurements of Oceans and Seas") +
-  ylab("Mean Sea Level Change (millimeters")
-
-
+  ylab("Mean Sea Level Change (millimeters") +
+  ggtitle("Mean Sea Level Change of Different Oceans and Seas of the World")
 
 ```
 
-## Temperature Change and GDP
+Rising sea levels are one of the most significant impacts of global warming. As the temperature of the Earth increases, the oceans absorb a large amount of the excess heat, leading to the thermal expansion of seawater. This causes the volume of the oceans to increase, leading to a rise in sea levels. In addition, the melting of glaciers and ice caps, particularly in polar regions, also contributes to the rise in sea levels (a relationship we will revisit soon in this project).  Looking at the first time series plot, it can be observed that from 1991 to 2021, there is an increase in sea level change in all of the regions represented above (including the "world" measurement as a whole).  There are certainly noise and seasonality in the data, a very clear increase can be observed.  
 
-```{r fig.width = 5, fig.height = 3}
+## Changes in greenhouse gas concentrations of the project countries from 1990 to 2019
+```{r}
+df_ghg <- read.csv("Kelly_draft/ghg.csv")
+df_ghg1 <- subset(df_ghg, Country %in% c("China","United States","India","France","Japan","Germany","Italy","United Kingdom","Mexico","Indonesia","Brazil"))
+
+df_ghg2 <- df_ghg1 %>% mutate_all(as.character) %>% pivot_longer(cols = -c("Country","Data.source","Sector","Gas","Unit"), names_to = "Year", values_to = "value", names_prefix = "X")
+
+fig_ghg2 <- ggplot(df_ghg2, aes(x=Year,y=as.numeric(value), color=Country,group=Country)) + 
+  geom_line() + 
+  geom_point() + theme(axis.text.x = element_text(angle = 90)) +
+  ggtitle('Changes in Green House Gas') + xlab('Year') + ylab('Greenhouse Gas measured in MTCO2e')
+
+plot(fig_ghg2)
+```
+
+Since the 20th century, the greenhouse gases produced by human activity have been the major cause of climate change. The excess of greenhouse gases in the atmosphere would disrupt the earth's carbon cycle and also hasten global warming. These 11 countries account for around 60% of global greenhouse gas emissions, whereas the 100 lowest emitters only contributed about 3%. From this plot, we can see that the greenhouse gas emissions from China and United States are much higher than other countries, and China had a huge jump throughout these years while other countries remain steadily. We know that the majority of the world's greenhouse gas emissions comes from transportation, electricity generation, agriculture and other forms of energy use. United States is the word's largest economy throughout years. This results in the greenhouse gas emissions of United States is higher than other developed and developing countries from 1990-2019 but within a relatively steady range. On the other hand, the greenhouse gas emissions from China keeps increasing and reaches the highest level in 2019. This increase can be attributed to the economy development happened in China. China's economy has grown to one of the largest and most powerful in the world over the past few decades. The extraordinary urbanization boom in China has accelerated greenhouse gas emissions. Cement and steel production, which have fueled China's infrastructure development, both emit significant amounts of CO2 during the refining process.
+
+```{r}
+fig2_ghg_country <- ggplot(df_ghg2, aes(x=Year,y=as.numeric(value), group=Country)) + 
+  geom_line() + 
+  geom_point() + theme(axis.text.x = element_text(angle = 90)) + facet_wrap(~Country, scale="free_y",nrow=6) +
+  ggtitle('Changes in Green House Gas by Countries') + ylab('Greenhouse Gas measured in MTCO2e')
+
+plot(fig2_ghg_country)
+```
+
+
+From the graph above, we can see that most developed countries are decreasing their greenhouse gas emission, while developing countries tends to have a continuous increasing. There are two unusual behaviors in Brazil and Japan. In 2010, the greenhouse gas emmision of Brazil has a sharp drop. The greenhouse gas emission of Japan has dropped from 2007 and reached the lowest in 2009. After 2009, it has a rapid increasing until 2013. This can be attributed to the economy crisis happened in 2008 and 2009. During that period of time, the Japanese economy shrunk and the Tokyo stock market crashed. The GDP of Japan only grew around 1%. Due to the economy crisis, the greenhouse gas emission of Japan dropped hard.
+
+## Changes in the forest area of the project countries from 1990 to 2019
+```{r}
+df_forest <- read.csv("Kelly_draft/forest.csv")
+df_forest1 <- subset(df_forest, Area %in% c("China","United States of America","India","France","Japan","Germany","Italy","United Kingdom","Mexico","Indonesia","Brazil") & Item %in% "Forestland" & Element %in% "Area" & Source %in% "FAO TIER 1")
+
+fig1_forest <- ggplot(df_forest1, aes(x=Year,y=as.numeric(Value),group=Area)) + 
+  geom_line() + 
+  geom_point() + facet_wrap(~Area, scale="free_y") +
+  ggtitle('Changes in Forest Area') + xlab('Year') + ylab('Forest Area / 1000 ha')
+
+plot(fig1_forest)
+```
+
+## Changes in the agricultural area of the project countries from 1990 to 2019
+```{r}
+df_landuse <- read.csv("Kelly_draft/landuse.csv")
+df_landuse_Agriculture <- subset(df_landuse, Area %in% c("China","United States of America","India","France","Japan","Germany","Italy","United Kingdom","Mexico","Indonesia","Brazil") & Item %in% "Agriculture")
+
+fig4_Agriculture_country <- ggplot(df_landuse_Agriculture, aes(x=Year,y=as.numeric(Value),group=Area)) + 
+  geom_line() + 
+  geom_point() + facet_wrap(~Area, scale="free_y") + theme(axis.text.x = element_text(angle = 90)) + ylab('Agricultural Area / 1000 ha') + ggtitle('Changes in Agricultural Area by Countries')
+
+plot(fig4_Agriculture_country)
+```
+
+
+From our analysis to greenhouse gases, in 2010, the greenhouse gas emission of Brazil has a sharp drop. This may attribute to the changes in forest land and agricultural area in Brazil. Brazil has the world's largest remaining tropical forest, accounting for roughly one-third of all remaining rain forests. The major sources of Brazil's greenhouse gas emission are land-use change and the agriculture. From the graph of changes in forest area, we can tell that from 2010, the rate of deforestation in Brazil has continued to fall However, even thought Brazil succeed in reducing deforestation, the emissions from agriculture and other industries are rising. Based on the graph of changes in agricultural area, we see that land used for agriculture is increasing a lot. This might attribute to the continuous increasing in greenhouse gases after the sharp drop. Besides, based on the two graphs above, we can tell that afforestation is talking place in most countries to balance their greenhouse emissions.
+
+## What is the relationship between the GDP and temperature change of a country?
+
+```{r }
 
 ## make copies and redefine data sets in order to merge temperature change and gdp together
 
@@ -207,14 +262,18 @@ ggplot(data = temperature_gdp, aes(x = Value.y, y = Value.x)) +
     geom_smooth(method = "lm") +
   facet_wrap(~Country, scale="free_x") +
   xlab("GDP") +
-  ylab("Temperature Change in Degrees Celsius")
+  ylab("Temperature Change in Degrees Celsius") +
+  ggtitle("Temperature Change v.s GDP for each country") +
+  scale_x_continuous(n.breaks = 3)
 
 # plot the general scatterplot, without faceting
 ggplot(data = temperature_gdp, aes(x = Value.y, y = Value.x,)) +
   geom_point()  +
   geom_smooth(method = "lm") +
   xlab("GDP") +
-  ylab("Temperature Change in Degrees Celsius")
+  ylab("Temperature Change in Degrees Celsius") +
+   ggtitle("Temperature Change v.s GDP")
+  
 
 
 ```
@@ -222,11 +281,11 @@ ggplot(data = temperature_gdp, aes(x = Value.y, y = Value.x,)) +
 
 The graphs above were generated by merging the temperature change data set with the GDP data set, each of the data points represents the pair of values (GDP, temperature change) of each country associated with a given year.  Before even conducting the analysis, logic informs us that there should be a positive relationship between the GDP and mean temperature change of a country, since a higher GDP typically relates to more production power, more technological advancements, more fossil fuel burning, and a higher output of global warming inducing gases.  However, on the other hand, one could make an argument that countries with a higher GDP have better resources for combating and mitigating temperature regulation.  
 
-Referring back to the individual GDP analysis above, China and the United State's GDP are magnitudes higher than the other countries', therefore, to make the graph readable, a scale of "free_x" was used.  The resulting faceted graph shows quite a clear relationship between GDP and temperature:  as the GDP of a country increases, the mean temperature change also increases.  This aligns with the initial logic outlined above.  Furthermore, while some countries' (Brazil and Indonesia) may not exhibit a high slope like the others (France, Italy, US), there is still a relatively strong positive relationship.  Therefore, with a degree of confidence, our group concludes that there is a positive correlation between the GDP and temperature change of a country (exhibited with the data we collected, cleaned, and transformed).  However, like I prefaced in the beginning of this project, climate data is inherently noisy, and incredibly dynamic; so it is entirely possible we may have missed some confounder variable that is contributing to this correlation.  
+Referring back to the individual GDP analysis above, China and the United State's GDP are magnitudes higher than the other countries', therefore, to make the graph readable, a scale of "free_x" was used.  The resulting faceted graph shows quite a clear relationship between GDP and temperature:  as the GDP of a country increases, the mean temperature change also increases.  This aligns with the initial logic outlined above.  Furthermore, while some countries' (Brazil and Indonesia) may not exhibit a high slope like the others (France, Italy, US), there is still a relatively strong positive relationship.  Therefore, with a degree of confidence, our group concludes that there is a positive correlation between the GDP and temperature change of a country (exhibited with the data we collected, cleaned, and transformed).  However, like I prefaced in the beginning of this project, climate data is inherently noisy, and incredibly dynamic; so it is entirely possible we may have missed some confounding variable that is contributing to this correlation.  
 
 
-## Temperature Change and Population
-```{r fig.width = 5, fig.height = 3}
+## What is the relationship between the population and the temperature change of a country?
+```{r }
 # merge the data sets of temperature change and population
 df_population = subset(df_gdp, Country %in% country_gdp & Subject %in% "Total population; persons; thousands")
 temperature_population = merge(df_temp_subset_1970, df_population, by.x = c("Country", 'Year'), by.y = c('Country', "Time"))
@@ -237,23 +296,27 @@ ggplot(data = temperature_population, aes(x = Value.y, y = Value.x)) +
   geom_smooth(method = "lm") +
   facet_wrap(~Country, scale="free_x") +
   xlab("Population") +
-  ylab("Temperature Change in Degrees Celsius")
+  ylab("Temperature Change in Degrees Celsius") +
+  ggtitle("Temperature Change v.s Population for each country") +
+  scale_x_continuous(n.breaks = 3)
 
 # plot it without faceting on the countries
 ggplot(data = temperature_population, aes(x = Value.y, y = Value.x)) +
   geom_point() +
   xlab("Population") +
-  ylab("Temperature Change in Degrees Celsius")
+  ylab("Temperature Change in Degrees Celsius") +
+  ggtitle("Temperature Change v.s Population")
 
 ```
+
 Similar with the temperature change v.s GDP plot above, this graph was also generated by merging the respective data sets.  Each of the data points from the faceted graph above represents the pair of values (population, temperature change) of each country associated with a given year.  Before even conducting the analysis, we hypothesized that there would be a positive relationship between the population and the temperature change of a country.  This initial guess aligns perfectly well with logic, now let us see if our data supports this.
 
 Referring back to the individual population analysis above, it can be observed that China and India have populations that are magnitudes higher than all of the other countries, so again, in order to make our graphs readable, a scale of "free_x" is used.  The resulting faceted graph shows quite a clear positive relationship for all 11 of the countries.  One can even make an argument that the correlation is stronger in this graph than the previous one of GDP v.s temperature change.  Our gathered data and analysis supports the conclusion that there is a semi-strong positive correlation between the population and the temperature change of a country.  
 
 
-## Sea Level Change and Sea Ice
+## What is the relationship between mean sea level change and the sea ice concentration of the world?
 
-```{r fig.width = 5}
+```{r}
 
 # read in the sea ice data
 df_icevolume <- read.csv("Kelly_draft/PIOMAS_monthly.csv")
@@ -275,7 +338,7 @@ sl_group_new_tidy = sl_group_new %>%
 colnames(sl_group_new_tidy) = c("year", 'Average_SL_Change')
 
 # plot the sea level change
-i1 = ggplot(data = sl_group_new_tidy, aes(x = as.numeric(year), y = Average_SL_Change)) +
+ggplot(data = sl_group_new_tidy, aes(x = as.numeric(year), y = Average_SL_Change)) +
   geom_point() +
   xlab("Year") +
   ylab("Sea Level Change (millimeters)") +
@@ -286,6 +349,17 @@ df_icevolume_new = df_icevolume_new[df_icevolume_new$year >= 1992, ]
 
 ice_sea = merge(sl_group_new_tidy, df_icevolume_new, by = "year")
 
+  
+# plot the sea ice change
+ggplot(df_icevolume, aes(x=year,y=average)) + 
+  geom_point() + 
+  ggtitle("Change in Ice Volume") +
+  xlab("Year") + ylab("Ice Volume")
+
+
+
+
+
 # plot the merged data and fit it with a regression line
 ggplot(data = ice_sea, aes(average, Average_SL_Change)) + 
   geom_point() + 
@@ -293,67 +367,7 @@ ggplot(data = ice_sea, aes(average, Average_SL_Change)) +
   xlab("Changes in Sea Ice") +
   ylab("Mean Sea Level Change") +
   ggtitle("Scatterplot of Mean Sea Level Change v.s Sea Ice Change (1992-2021)")
-  
-# plot the sea ice change
-fig3_icevolume <- ggplot(df_icevolume, aes(x=year,y=average)) + 
-  geom_point() + 
-  ggtitle("Change in Ice Volume") +
-  xlab("Year") + ylab("Ice Volume")
-
-
-gridExtra::grid.arrange(i1, fig3_icevolume, nrow = 1)
 
 ```
 
-
-```{r}
-df_ghg <- read.csv("Kelly_draft/ghg.csv")
-df_ghg1 <- subset(df_ghg, Country %in% c("China","United States","India","France","Japan","Germany","Italy","United Kingdom","Mexico","Indonesia","Brazil"))
-
-df_ghg2 <- df_ghg1 %>% mutate_all(as.character) %>% pivot_longer(cols = -c("Country","Data.source","Sector","Gas","Unit"), names_to = "Year", values_to = "value", names_prefix = "X")
-
-fig_ghg2 <- ggplot(df_ghg2, aes(x=Year,y=as.numeric(value), color=Country,group=Country)) + 
-  geom_line() + 
-  geom_point() + theme(axis.text.x = element_text(angle = 90)) +
-  ggtitle('Changes in Green House Gas') + xlab('Year') + ylab('Greenhouse Gas measured in MTCO2e')
-
-plot(fig_ghg2)
-```
-Since the 20th century, the greenhouse gases produced by human activity have been the major cause of climate change. The excess of greenhouse gases in the atmosphere would disrupt the earth's carbon cycle and also hasten global warming. These 11 countries account for around 60% of global greenhouse gas emissions, whereas the 100 lowest emitters only contributed about 3%. From this plot, we can see that the greenhouse gas emissions from China and United States are much higher than other countries, and China had a huge jump throughout these years while other countries remain steadily. We know that the majority of the world's greenhouse gas emissions comes from transportation, electricity generation, agriculture and other forms of energy use. United States is the word's largest economy throughout years. This results in the greenhouse gas emissions of United States is higher than other developed and developing countries from 1990-2019 but within a relatively steady range. On the other hand, the greenhouse gas emissions from China keeps increasing and reaches the highest level in 2019. This increase can be attributed to the economy development happened in China. China's economy has grown to one of the largest and most powerful in the world over the past few decades. The extraordinary urbanization boom in China has accelerated greenhouse gas emissions. Cement and steel production, which have fueled China's infrastructure development, both emit significant amounts of CO2 during the refining process.
-
-```{r}
-fig2_ghg_country <- ggplot(df_ghg2, aes(x=Year,y=as.numeric(value), group=Country)) + 
-  geom_line() + 
-  geom_point() + theme(axis.text.x = element_text(angle = 90)) + facet_wrap(~Country, scale="free_y",nrow=6) +
-  ggtitle('Changes in Green House Gas by Countries') + ylab('Greenhouse Gas measured in MTCO2e')
-
-plot(fig2_ghg_country)
-```
-
-From the graph above, we can see that most developed countries are decreasing their greenhouse gas emission, while developing countries tends to have a continuous increasing. There are two unusual behaviors in Brazil and Japan. In 2010, the greenhouse gas emmision of Brazil has a sharp drop. The greenhouse gas emission of Japan has dropped from 2007 and reached the lowest in 2009. After 2009, it has a rapid increasing until 2013. This can be attributed to the economy crisis happened in 2008 and 2009. During that period of time, the Japanese economy shrunk and the Tokyo stock market crashed. The GDP of Japan only grew around 1%. Due to the economy crisis, the greenhouse gas emission of Japan dropped hard.
-
-
-```{r}
-df_forest <- read.csv("Kelly_draft/forest.csv")
-df_forest1 <- subset(df_forest, Area %in% c("China","United States of America","India","France","Japan","Germany","Italy","United Kingdom","Mexico","Indonesia","Brazil") & Item %in% "Forestland" & Element %in% "Area" & Source %in% "FAO TIER 1")
-
-fig1_forest <- ggplot(df_forest1, aes(x=Year,y=as.numeric(Value),group=Area)) + 
-  geom_line() + 
-  geom_point() + facet_wrap(~Area, scale="free_y") +
-  ggtitle('Changes in Forest Area') + xlab('Year') + ylab('Forest Area / 1000 ha')
-
-plot(fig1_forest)
-```
-
-# Agriculture
-```{r}
-df_landuse <- read.csv("Kelly_draft/landuse.csv")
-df_landuse_Agriculture <- subset(df_landuse, Area %in% c("China","United States of America","India","France","Japan","Germany","Italy","United Kingdom","Mexico","Indonesia","Brazil") & Item %in% "Agriculture")
-
-fig4_Agriculture_country <- ggplot(df_landuse_Agriculture, aes(x=Year,y=as.numeric(Value),group=Area)) + 
-  geom_line() + 
-  geom_point() + facet_wrap(~Area, scale="free_y") + theme(axis.text.x = element_text(angle = 90)) + ylab('Agricultural Area / 1000 ha') + ggtitle('Changes in Agricultural Area by Countries')
-
-plot(fig4_Agriculture_country)
-```
-From our analysis to greenhouse gases, in 2010, the greenhouse gas emission of Brazil has a sharp drop. This may attribute to the changes in forest land and agricultural area in Brazil. Brazil has the world's largest remaining tropical forest, accounting for roughly one-third of all remaining rain forests. The major sources of Brazil's greenhouse gas emission are land-use change and the agriculture. From the graph of changes in forest area, we can tell that from 2010, the rate of deforestation in Brazil has continued to fall However, even thought Brazil succeed in reducing deforestation, the emissions from agriculture and other industries are rising. Based on the graph of changes in agricultural area, we see that land used for agriculture is increasing a lot. This might attribute to the continuous increasing in greenhouse gases after the sharp drop. Besides, based on the two graphs above, we can tell that afforestation is talking place in most countries to balance their greenhouse emissions.
+As we have mentioned earlier in this project, the relationship of sea ice volume and sea level change will be explored.  The relationship between sea level change and sea ice volume is complex and not fully understood; however, one factor that is known to play a role is the melting of glaciers and ice caps, which can contribute to a rise in sea levels. As sea ice melts, it adds more water to the oceans, which can cause sea levels to rise.  From the first pair of plots, we are able to observe an increase in the sea level change, while during the same time frame, the sea ice volume is decreasing. Therefore, to observe the trend further, we created a scatterplot of these values merged together on the same year.  From the scatterplot, there is clear negative correlation between these two features (we will never conclude causality), as sea ice volume decreases, the sea level rises.  The extent that sea ice actually contributes to sea level rise is extremely difficult to quantify, as the climate system is so dynamic.  But nevertheless, from these graphs, a clear relationship can be observed. 
